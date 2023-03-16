@@ -42,7 +42,6 @@ def contact(request):
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
-    form = ContactForm(request.POST)
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
