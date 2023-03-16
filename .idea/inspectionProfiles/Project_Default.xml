@@ -1,0 +1,30 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="DRF.todo.models.Todo.objects" />
+          <option value="rest_framework.authtoken.models.Token.*" />
+          <option value="TASK.models.Task.*" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Cart.*" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Wishlist.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.OrderPlaced.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Product.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Image.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Comment.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.CommentReply.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Customer.objects" />
+          <option value="Ecomm_Hoppe.Ecomm.Shop.models.Payment.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

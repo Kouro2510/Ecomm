@@ -1,0 +1,25 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Contact{% endblock title %}
+
+{% block banner-slider %}
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d364.299905355829!2d106.62707051595594!3d10.853627331309148!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752b16985d9d5f%3A0x5c4d269ebf06f865!2zSE9TRSBT4bueIEdJQU8gROG7ikNIIENI4buoTkcgS0hPw4FOIEjhu5IgQ0jDjSBNSU5I!5e0!3m2!1svi!2sus!4v1678690254172!5m2!1svi!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+{% endblock banner-slider %}
+{% block main-content %}
+<div class="container mt-3">
+ {% if messages %}
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ msg.tags }}" role="alert">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+<form method="post">
+  <h2 class="text-center">Contact with us</h2>
+    {% csrf_token %}
+    {{ form }}
+ <button style="margin-bottom: 5%" type="submit" class="btn btn-primary mt-3 ">Submit</button>
+</form>
+
+</div>
+{% endblock main-content %}

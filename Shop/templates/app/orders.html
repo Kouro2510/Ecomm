@@ -1,0 +1,72 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+{% if order_placed %}
+<div class="container mt-5">
+    <table class="table table-hover text-center ">
+       <thead>
+          <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Images</th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+       </thead>
+       <tbody class="text-center">
+          {% for op in order_placed %}
+          <tr>
+             <td class="py-5">{{ op.customer}}</td>
+             <td> <img src="{{ op.product.product_image.url }}" height="80" width="100"></td>
+             <td class="py-5"> {{ op.product.title }}</td>
+             <td class="py-5"> {{ op.price }}$</td>
+             <td class="py-5">{{ op.quantity }}</td>
+             <td class="py-5">{{op.ordered_date}}</td>
+             <td class="py-5">
+                {{ op.payment.status }}
+                {% if op.payment.status == 'Accepted' %}
+                <div class="progress">
+                   <div class="progress-bar" role="progressbar" style="width: 40%"
+                      aria-valuenow="20"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+                {% if op.payment.status == 'Packed' %}
+                <div class="progress">
+                   <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
+                      aria-valuenow="20"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+                {% if op.payment.status == 'On The Way' %}
+                <div class="progress">
+                   <div class="progress-bar bg-warning" role="progressbar" style="width: 80%"
+                      aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+                {% if op.payment.status == 'Delivered' %}
+                <div class="progress">
+                   <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                      aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+                {% if op.payment.status == 'Cancel' %}
+                <div class="progress">
+                   <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                      aria-valuenow="20"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% endif %}
+             </td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+</div>
+{% else %}
+        <h3 style="margin-top: 5%"> You did not buy anything, please comeback to shopping </h3>
+    {% endif %}
+{% endblock main-content %}

@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Search{% endblock title %}
+{% block main-content %}
+    <div class="container">
+        <div class="row row-cols-4">
+            {% for prod in product %}
+                <div class="col">
+                    <div class=" text-center mb-4 hover-shadow">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'product-detail' prod.id %}" class="btn">
+                                <div>
+                                    <img src="{{ prod.product_image.url }}" width="300px" height="200px" alt="">
+                                    <div class="fw-bold">{{ prod.title }}</div>
+                                    <div class="fw-bold text-danger">
+                                        Discounted {{ prod.discounted_price }}$/-
+                                        <small class="fw-ligt text-decoration-line-through">{{ prod.selling_price }}$</small>
+                                    </div>
+                                </div>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn">
+                                <div>
+                                    <img src="{{ prod.product_image.url }}" width="300px" height="200px" alt="">
+                                    <div class="fw-bold">{{ prod.title }}</div>
+                                    <div class="fw-bold text-danger">
+                                        Discounted {{ prod.discounted_price }}$/-
+                                        <small class="fw-ligt text-decoration-line-through">{{ prod.selling_price }}$</small>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock main-content %}
