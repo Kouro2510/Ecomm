@@ -1,19 +1,16 @@
-
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image
 from .forms import CustomerRegistrationForm, CustomerProfileForm, CommentForm, ReplyForm, ContactForm
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.core.mail import send_mail
 
-# Create your views here.
 
 def home(request):
     user = request.user
@@ -42,7 +39,6 @@ def contact(request):
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
-    form = ContactForm(request.POST)
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -102,7 +98,7 @@ def product_detail(request, pk):
         'image_first': image_first,
         'totalitem': totalitem,
         'wishitem': wishitem,
-        'totalwishlist':totalwishlist,
+        'totalwishlist': totalwishlist,
         'user': user,
     }
     return render(request, "app/productdetail.html", context)
@@ -140,7 +136,6 @@ class CategoryTitle(View):
         product = Product.objects.filter(title=val)
         title = Product.objects.filter(category=product[0].category).values('title')
         return render(request, "app/category.html", locals())
-
 
 
 class CustomerRegistrationView(View):
@@ -235,7 +230,6 @@ def remove_address(request, pk):
     return redirect('/address/')
 
 
-# @login_required()
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
@@ -243,7 +237,6 @@ def add_to_cart(request):
         c = Cart.objects.get(Q(product=product_id) & Q(user=request.user))
         c.quantity += 1
         c.save()
-        amount = 0
         return redirect('/cart')
     else:
         product = Product.objects.get(id=product_id)
@@ -278,7 +271,6 @@ def quantity_change(request):
                 value = p.quantity * p.product.selling_price
                 amount = amount + value
         totalamount = amount + 40
-        # print(prod_id)
         data = {
             'quantity': c.quantity,
             'amount': amount,
@@ -317,7 +309,6 @@ def remove_cart(request):
     return redirect('/cart/')
 
 
-# @login_required()
 def show_cart(request):
     user = request.user
     cart = Cart.objects.filter(user=user)
@@ -345,7 +336,7 @@ def show_cart(request):
     return render(request, 'app/addtocart.html', locals())
 
 
-class checkout(View):
+class checkOut(View):
     def get(self, request):
         user = request.user
         totalwishlist = 0
@@ -371,7 +362,6 @@ class checkout(View):
         cart_items = Cart.objects.filter(user=user)
         famount = 0
         for p in cart_items:
-            product=p.product.title
 
             if p.product.discounted_price != 0:
                 value = p.quantity * p.product.discounted_price
@@ -385,23 +375,10 @@ class checkout(View):
         payment.payment_option = request.POST.get('Payment')
         payment.payment_status = "pending"
         payment.paid = False
-        # subject2 = f'No reply to email'
-        # msg2 = f'Hello {user} '
-        # msg2 += f'\nYou have 1 unpaid order\n'
-        # msg2 += f'You have just purchased a product: {famount} {product}\n'
-        # msg2 += f'With the price:{totalamount}\n'
-        # msg2 += f'Thank you for your seen.\n'
-        # msg2 += f'Your friend\n'
-        # msg2 += f'Neel'
-        # send_mail(
-        #         subject=subject2,
-        #         message=msg2,
-        #         from_email=settings.EMAIL_HOST_USER,
-        #         recipient_list=[user.email]
-        #         )
         payment.save()
         for c in cart_items:
-            OrderPlaced(user=user, customer=Cuss, product=c.product, quantity=c.quantity,price = value ,payment=payment).save()
+            OrderPlaced(user=user, customer=Cuss, product=c.product, quantity=c.quantity, price=value,
+                        payment=payment).save()
             c.delete()
         return redirect('/orders')
 
@@ -416,7 +393,6 @@ def orders(request):
         wishitem = len(Wishlist.objects.filter(user=request.user))
         order_placed = OrderPlaced.objects.filter(user=request.user)
         for op in order_placed:
-
             order_date = op.ordered_date
             current_time = timezone.now()
             time_difference = current_time - order_date
@@ -440,6 +416,7 @@ def orders(request):
 
     return render(request, 'app/orders.html', locals())
 
+
 def plus_wishlist(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -457,7 +434,7 @@ def minus_wishlist(request):
         prod_id = request.GET['prod_id']
         product = Product.objects.get(id=prod_id)
         user = request.user
-        wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
+        wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=user))
         wishlist.delete()
         data = {
             'message': 'Wishlist remove successfully'
@@ -476,7 +453,6 @@ def search(request):
     return render(request, "app/search.html", locals())
 
 
-# @login_required()
 def show_wishlist(request):
     user = request.user
     totalitem = 0

@@ -3,9 +3,6 @@ from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Com
 from django.contrib.auth.models import Group
 
 
-# Register your models here.
-
-
 class ImageInline(admin.TabularInline):
     model = Image
     extra = 1
@@ -44,7 +41,7 @@ class PaymentModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'amount', 'status', 'payment_option',
                     'paid']
     list_filter = ['status', 'payment_option',
-                    'paid',]
+                   'paid', ]
     inlines = [OrderPlacedInline]
 
 

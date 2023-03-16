@@ -1,11 +1,10 @@
-from django.urls import path, include
-from . import views, admin
+from django.urls import path
+from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
-from .forms import LoginForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, CustomerRegistrationForm
+from .forms import LoginForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm
 from django.contrib import admin
-from .views import search
 
 urlpatterns = [
                   path("", views.home, name="home"),

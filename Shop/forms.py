@@ -1,16 +1,11 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField, PasswordChangeForm, \
     PasswordResetForm, SetPasswordForm
-from django.db import models
 from django.forms import PasswordInput
 from django.contrib.auth.models import User
-from django import forms
-from django.shortcuts import render, redirect
-from django.utils.datetime_safe import datetime
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import PaymentOption, Comment, Product, CommentReply, Contact
-from .models import Customer, Payment
+from .models import PaymentOption, Comment, CommentReply, Contact
+from .models import Customer
 from django import forms
 
 
