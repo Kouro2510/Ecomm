@@ -130,7 +130,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment,on_delete=models.CASCADE,related_name='rates')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])

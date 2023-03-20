@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact
+from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact, Rating
 from django.contrib.auth.models import Group
 
 
@@ -67,3 +67,7 @@ class CommentModeAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactModeAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'email', 'message']
+
+@admin.register(Rating)
+class RatingModeAdmin(admin.ModelAdmin):
+    list_display = ['comment', 'product', 'user', 'value']

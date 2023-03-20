@@ -62,10 +62,10 @@ def product_detail(request, pk):
     all_comments = Comment.objects.filter(product=product.id)
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
-    rattingstar = Rating.objects.filter(product=product)
-    print(rattingstar)
+    rating_stars = Rating.objects.filter(product=product)
+    values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
+    print(rating_stars)
     user = request.user
-
     totalitem = 0
     totalwishlist = 0
     if request.user.is_authenticated:
@@ -77,10 +77,9 @@ def product_detail(request, pk):
         print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
-                value = int(request.POST.get('value'))
+                value = int(request.POST.get('value')) # Lấy giá trị value của rating được post lên từ form
                 author = request.user
                 product_id = product
-
                 description = form1.cleaned_data["description"]
                 req = Comment(author=author, product=product_id, description=description)
                 req.save()
@@ -111,9 +110,10 @@ def product_detail(request, pk):
         'wishitem': wishitem,
         'totalwishlist': totalwishlist,
         'user': user,
-        'rating':rattingstar,
+        'rating_stars': rating_stars,
     }
     return render(request, "app/productdetail.html", context)
+
 
 
 def delete_comment(request, pk):
