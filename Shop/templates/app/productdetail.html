@@ -26,12 +26,12 @@
             <h1 style="font-family: Georgia,serif; font-size: 50px;">{{ product.title }}</h1>
             {% if product.discounted_price == 0 %}
                 <small class="text-muted fs-5">
-                    Price {{ product.selling_price }}$
+                    Price {{ product.selling_price|floatformat:"-0" }}$
                 </small>
             {% else %}
-                <small class=" text-muted fs-5"> Discount {{ product.discounted_price }}$ /-</small>
+                <small class=" text-muted fs-5"> Discount {{ product.discounted_price|floatformat:"-0" }}$ /-</small>
                 <small class="text-decoration-line-through text-muted fs-5">
-                    <del>Price {{ product.selling_price }}$</del>
+                    <del>Price {{ product.selling_price|floatformat:"-0" }}$</del>
                 </small>
             {% endif %}
             <br><br><h4>Product Features</h4>
@@ -63,9 +63,25 @@
             {% endif %}
             <div class="col">
                 {% if user.is_authenticated %}
+
                     <h3 style="margin-top:1rem">Write your comment...</h3>
                     <form method="post">
                         {% csrf_token %}
+                        <label>
+                            1 star <input type="radio" name="value" value="1">
+                        </label>
+                        <label>
+                            2 stars <input type="radio" name="value" value="2">
+                        </label>
+                        <label>
+                            3 stars <input type="radio" name="value" value="3">
+                        </label>
+                        <label>
+                            4 stars <input type="radio" name="value" value="4">
+                        </label>
+                        <label>
+                            5 stars <input type="radio" name="value" value="5">
+                        </label>
                         {{ form1.as_p }}
                         <button type="submit" class="btn btn-primary">Comment</button>
                     </form>
@@ -79,6 +95,7 @@
     <div class="col">
         <h3>Comments ({{ all_comments.count }})</h3>
         {% for comment in all_comments %}
+
             <div style="margin-bottom: 10px" class="d-flex mx-5 justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="border-5">
@@ -89,6 +106,7 @@
                             {{ comment.author }}
                         </h5>
                         <p class="mx-2">{{ comment.description }}</p>
+                        <p>Your rating: {{ rating.values.value }}/5</p>
                     </div>
                 </div>
                 <div class="d-flex flex-column">

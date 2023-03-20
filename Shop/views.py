@@ -1,16 +1,19 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image
+from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Rating
 from .forms import CustomerRegistrationForm, CustomerProfileForm, CommentForm, ReplyForm, ContactForm
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.core.mail import send_mail
 
+
+# Create your views here.
 
 def home(request):
     user = request.user
@@ -39,6 +42,7 @@ def contact(request):
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
+    form = ContactForm(request.POST)
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -58,7 +62,10 @@ def product_detail(request, pk):
     all_comments = Comment.objects.filter(product=product.id)
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
+    rattingstar = Rating.objects.filter(product=product)
+    print(rattingstar)
     user = request.user
+
     totalitem = 0
     totalwishlist = 0
     if request.user.is_authenticated:
@@ -70,11 +77,15 @@ def product_detail(request, pk):
         print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
+                value = int(request.POST.get('value'))
                 author = request.user
                 product_id = product
+
                 description = form1.cleaned_data["description"]
                 req = Comment(author=author, product=product_id, description=description)
                 req.save()
+                rating = Rating(product=product, user=request.user, value=value, comment=req)
+                rating.save()
                 return redirect(request.META.get('HTTP_REFERER', '/'))
         else:
             if form2.is_valid():
@@ -100,6 +111,7 @@ def product_detail(request, pk):
         'wishitem': wishitem,
         'totalwishlist': totalwishlist,
         'user': user,
+        'rating':rattingstar,
     }
     return render(request, "app/productdetail.html", context)
 
@@ -136,6 +148,13 @@ class CategoryTitle(View):
         product = Product.objects.filter(title=val)
         title = Product.objects.filter(category=product[0].category).values('title')
         return render(request, "app/category.html", locals())
+
+
+# class Product_sizeView(View):
+#     def get(self, request, pk):
+#         product = Product.objects.get(pk=pk)
+#         product_sizes = Product_Size.objects.filter(parent_id=product)
+#         title = product_sizes.objects.filter()
 
 
 class CustomerRegistrationView(View):
@@ -230,6 +249,7 @@ def remove_address(request, pk):
     return redirect('/address/')
 
 
+# @login_required()
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
@@ -237,6 +257,7 @@ def add_to_cart(request):
         c = Cart.objects.get(Q(product=product_id) & Q(user=request.user))
         c.quantity += 1
         c.save()
+        amount = 0
         return redirect('/cart')
     else:
         product = Product.objects.get(id=product_id)
@@ -271,6 +292,7 @@ def quantity_change(request):
                 value = p.quantity * p.product.selling_price
                 amount = amount + value
         totalamount = amount + 40
+        # print(prod_id)
         data = {
             'quantity': c.quantity,
             'amount': amount,
@@ -309,6 +331,7 @@ def remove_cart(request):
     return redirect('/cart/')
 
 
+# @login_required()
 def show_cart(request):
     user = request.user
     cart = Cart.objects.filter(user=user)
@@ -336,7 +359,7 @@ def show_cart(request):
     return render(request, 'app/addtocart.html', locals())
 
 
-class checkOut(View):
+class checkout(View):
     def get(self, request):
         user = request.user
         totalwishlist = 0
@@ -362,7 +385,6 @@ class checkOut(View):
         cart_items = Cart.objects.filter(user=user)
         famount = 0
         for p in cart_items:
-
             if p.product.discounted_price != 0:
                 value = p.quantity * p.product.discounted_price
                 famount = famount + value
@@ -396,12 +418,14 @@ def orders(request):
             order_date = op.ordered_date
             current_time = timezone.now()
             time_difference = current_time - order_date
+            import datetime
+            new_time = order_date + datetime.timedelta(minutes=35)
+            payment = Payment.objects.filter(Q(id=op.payment) and Q(status="Pending"))
             if time_difference > timedelta(minutes=1) and op.payment.status == "Pending":
-                payment = Payment.objects.filter(Q(id=op.payment) and Q(status="Pending"))
                 subject1 = f'No reply to email'
                 msg1 = f'Hello {user} '
-                msg1 += f'You have 1 unpaid order\n'
-                msg1 += f'Please pay within 15 minute after receiving this email\n'
+                msg1 += f'\nYou have 1 unpaid order\n'
+                msg1 += f'Please pay within {new_time} after receiving this email\n'
                 msg1 += f'Otherwise we will cancel your order\n'
                 msg1 += f'Thank you for your seen.\n'
                 msg1 += f'Your friend\n'
@@ -413,7 +437,8 @@ def orders(request):
                     recipient_list=[user.email]
                 )
                 payment.delete()
-
+            else:
+                pass
     return render(request, 'app/orders.html', locals())
 
 
@@ -434,7 +459,7 @@ def minus_wishlist(request):
         prod_id = request.GET['prod_id']
         product = Product.objects.get(id=prod_id)
         user = request.user
-        wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=user))
+        wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
         wishlist.delete()
         data = {
             'message': 'Wishlist remove successfully'
@@ -453,6 +478,7 @@ def search(request):
     return render(request, "app/search.html", locals())
 
 
+# @login_required()
 def show_wishlist(request):
     user = request.user
     totalitem = 0

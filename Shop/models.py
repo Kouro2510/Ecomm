@@ -129,6 +129,13 @@ class Comment(models.Model):
         return str(self.product)
 
 
+class Rating(models.Model):
+    comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+
+
 class CommentReply(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
