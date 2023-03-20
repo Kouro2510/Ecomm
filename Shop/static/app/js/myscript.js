@@ -86,3 +86,4 @@ $('.plus-wishlist').click(function () {
         },
     });
 });
+

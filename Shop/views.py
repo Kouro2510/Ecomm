@@ -64,7 +64,14 @@ def product_detail(request, pk):
     parent_id = request.POST.get('parent_id')
     rating_stars = Rating.objects.filter(product=product)
     values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
-    print(rating_stars)
+    star=rating_stars.values_list('value', flat=True)
+    star_list = [s for s in star]
+    lengthStr=0
+    lenSnstar=len(rating_stars)
+    if lenSnstar==0:
+        lengthStr = 0
+    else:
+        lengthStr = (sum(star_list) / lenSnstar)
     user = request.user
     totalitem = 0
     totalwishlist = 0
@@ -111,6 +118,7 @@ def product_detail(request, pk):
         'totalwishlist': totalwishlist,
         'user': user,
         'rating_stars': rating_stars,
+        'lengthStr':lengthStr
     }
     return render(request, "app/productdetail.html", context)
 
