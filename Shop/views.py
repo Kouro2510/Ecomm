@@ -63,7 +63,7 @@ def product_detail(request, pk):
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
     rating_stars = Rating.objects.filter(product=product)
-    values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
+    values = request.POST.getlist('rating')  # Lấy toàn bộ giá trị value được post lên từ form
     print(values)
     user = request.user
     totalitem = 0
@@ -77,7 +77,7 @@ def product_detail(request, pk):
         print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
-                value = int(request.POST.get('value')) # Lấy giá trị value của rating được post lên từ form
+                value = int(request.POST.get('rating')) # Lấy giá trị value của rating được post lên từ form
                 author = request.user
                 product_id = product
                 description = form1.cleaned_data["description"]
