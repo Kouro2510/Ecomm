@@ -64,7 +64,7 @@ def product_detail(request, pk):
     parent_id = request.POST.get('parent_id')
     rating_stars = Rating.objects.filter(product=product)
     values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
-    print(rating_stars)
+    print(values)
     user = request.user
     totalitem = 0
     totalwishlist = 0
