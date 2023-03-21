@@ -24,20 +24,24 @@
         </div>
         <div class="productdetail col-lg-5">
             <h1 style="font-family: Georgia,serif; font-size: 50px;">{{ product.title }}</h1>
+            {% if lengthStr != 0 %}
+                <h2>{{ lengthStr }}/5<i class="fas fa-star" style="color:yellow;"></i></h2>
+            {% endif %}
             {% if product.discounted_price == 0 %}
                 <small class="text-muted fs-5">
-                    Price {{ product.selling_price }}$
+                    Price {{ product.selling_price|floatformat:"-0" }}$
                 </small>
             {% else %}
-                <small class=" text-muted fs-5"> Discount {{ product.discounted_price }}$ /-</small>
+                <small class=" text-muted fs-5"> Discount {{ product.discounted_price|floatformat:"-0" }}$ /-</small>
                 <small class="text-decoration-line-through text-muted fs-5">
-                    <del>Price {{ product.selling_price }}$</del>
+                    <del>Price {{ product.selling_price|floatformat:"-0" }}$</del>
                 </small>
             {% endif %}
             <br><br><h4>Product Features</h4>
             <ul class="fs-5" style="font-family: sans-serif ">
                 <h5>{{ product.description }}</h5>
             </ul>
+
             <form action="/add-to-cart" class="d-inline">
                 <input type="hidden" name="prod_id" value="{{ product.id }}">
                 <button type="submit" class=" btn-primary shadow px-5 py-2">Add to Cart</button>
@@ -63,9 +67,22 @@
             {% endif %}
             <div class="col">
                 {% if user.is_authenticated %}
+
                     <h3 style="margin-top:1rem">Write your comment...</h3>
                     <form method="post">
                         {% csrf_token %}
+                        <div class="rating">
+                            <input type="radio" name="rating" id="star5" value="5">
+                            <label for="star5">5 stars</label>
+                            <input type="radio" name="rating" id="star4" value="4">
+                            <label for="star4">4 stars</label>
+                            <input type="radio" name="rating" id="star3" value="3">
+                            <label for="star3">3 stars</label>
+                            <input type="radio" name="rating" id="star2" value="2">
+                            <label for="star2">2 stars</label>
+                            <input type="radio" name="rating" id="star1" value="1">
+                            <label for="star1">1 star</label>
+                        </div>
                         {{ form1.as_p }}
                         <button type="submit" class="btn btn-primary">Comment</button>
                     </form>
@@ -79,6 +96,7 @@
     <div class="col">
         <h3>Comments ({{ all_comments.count }})</h3>
         {% for comment in all_comments %}
+
             <div style="margin-bottom: 10px" class="d-flex mx-5 justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="border-5">
@@ -89,6 +107,9 @@
                             {{ comment.author }}
                         </h5>
                         <p class="mx-2">{{ comment.description }}</p>
+                        {% for rating in comment.rates.all %}
+                            <p> {{ rating.value }}/5 <i class="fas fa-star" style="color:yellow;"></i></p>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="d-flex flex-column">

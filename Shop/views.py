@@ -1,10 +1,9 @@
-
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image
+from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Rating
 from .forms import CustomerRegistrationForm, CustomerProfileForm, CommentForm, ReplyForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -12,6 +11,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.core.mail import send_mail
+
 
 # Create your views here.
 
@@ -61,6 +61,16 @@ def product_detail(request, pk):
     all_comments = Comment.objects.filter(product=product.id)
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
+    rating_stars = Rating.objects.filter(product=product)
+    values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
+    star=rating_stars.values_list('value', flat=True)
+    star_list = [s for s in star]
+    lengthStr=0
+    lenSnstar=len(rating_stars)
+    if lenSnstar==0:
+        lengthStr = 0
+    else:
+        lengthStr = (sum(star_list) / lenSnstar)
     user = request.user
     totalitem = 0
     totalwishlist = 0
@@ -73,11 +83,14 @@ def product_detail(request, pk):
         print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
+                value = int(request.POST.get('value')) # Lấy giá trị value của rating được post lên từ form
                 author = request.user
                 product_id = product
                 description = form1.cleaned_data["description"]
                 req = Comment(author=author, product=product_id, description=description)
                 req.save()
+                rating = Rating(product=product, user=request.user, value=value, comment=req)
+                rating.save()
                 return redirect(request.META.get('HTTP_REFERER', '/'))
         else:
             if form2.is_valid():
@@ -101,10 +114,13 @@ def product_detail(request, pk):
         'image_first': image_first,
         'totalitem': totalitem,
         'wishitem': wishitem,
-        'totalwishlist':totalwishlist,
+        'totalwishlist': totalwishlist,
         'user': user,
+        'rating_stars': rating_stars,
+        'lengthStr':lengthStr
     }
     return render(request, "app/productdetail.html", context)
+
 
 
 def delete_comment(request, pk):
@@ -140,6 +156,12 @@ class CategoryTitle(View):
         title = Product.objects.filter(category=product[0].category).values('title')
         return render(request, "app/category.html", locals())
 
+
+# class Product_sizeView(View):
+#     def get(self, request, pk):
+#         product = Product.objects.get(pk=pk)
+#         product_sizes = Product_Size.objects.filter(parent_id=product)
+#         title = product_sizes.objects.filter()
 
 
 class CustomerRegistrationView(View):
@@ -370,8 +392,6 @@ class checkout(View):
         cart_items = Cart.objects.filter(user=user)
         famount = 0
         for p in cart_items:
-            product=p.product.title
-
             if p.product.discounted_price != 0:
                 value = p.quantity * p.product.discounted_price
                 famount = famount + value
@@ -384,23 +404,10 @@ class checkout(View):
         payment.payment_option = request.POST.get('Payment')
         payment.payment_status = "pending"
         payment.paid = False
-        # subject2 = f'No reply to email'
-        # msg2 = f'Hello {user} '
-        # msg2 += f'\nYou have 1 unpaid order\n'
-        # msg2 += f'You have just purchased a product: {famount} {product}\n'
-        # msg2 += f'With the price:{totalamount}\n'
-        # msg2 += f'Thank you for your seen.\n'
-        # msg2 += f'Your friend\n'
-        # msg2 += f'Neel'
-        # send_mail(
-        #         subject=subject2,
-        #         message=msg2,
-        #         from_email=settings.EMAIL_HOST_USER,
-        #         recipient_list=[user.email]
-        #         )
         payment.save()
         for c in cart_items:
-            OrderPlaced(user=user, customer=Cuss, product=c.product, quantity=c.quantity,price = value ,payment=payment).save()
+            OrderPlaced(user=user, customer=Cuss, product=c.product, quantity=c.quantity, price=value,
+                        payment=payment).save()
             c.delete()
         return redirect('/orders')
 
@@ -415,16 +422,17 @@ def orders(request):
         wishitem = len(Wishlist.objects.filter(user=request.user))
         order_placed = OrderPlaced.objects.filter(user=request.user)
         for op in order_placed:
-
             order_date = op.ordered_date
             current_time = timezone.now()
             time_difference = current_time - order_date
+            import datetime
+            new_time = order_date + datetime.timedelta(minutes=35)
+            payment = Payment.objects.filter(Q(id=op.payment) and Q(status="Pending"))
             if time_difference > timedelta(minutes=1) and op.payment.status == "Pending":
-                payment = Payment.objects.filter(Q(id=op.payment) and Q(status="Pending"))
                 subject1 = f'No reply to email'
                 msg1 = f'Hello {user} '
-                msg1 += f'You have 1 unpaid order\n'
-                msg1 += f'Please pay within 15 minute after receiving this email\n'
+                msg1 += f'\nYou have 1 unpaid order\n'
+                msg1 += f'Please pay within {new_time} after receiving this email\n'
                 msg1 += f'Otherwise we will cancel your order\n'
                 msg1 += f'Thank you for your seen.\n'
                 msg1 += f'Your friend\n'
@@ -436,8 +444,10 @@ def orders(request):
                     recipient_list=[user.email]
                 )
                 payment.delete()
-
+            else:
+                pass
     return render(request, 'app/orders.html', locals())
+
 
 def plus_wishlist(request):
     if request.method == 'GET':

@@ -2,7 +2,6 @@ import unittest
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
-from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
 
 from .forms import CustomerProfileForm

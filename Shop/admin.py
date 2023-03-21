@@ -1,9 +1,6 @@
 from django.contrib import admin
-from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact
+from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact, Rating
 from django.contrib.auth.models import Group
-
-
-# Register your models here.
 
 
 class ImageInline(admin.TabularInline):
@@ -44,7 +41,7 @@ class PaymentModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'amount', 'status', 'payment_option',
                     'paid']
     list_filter = ['status', 'payment_option',
-                    'paid',]
+                   'paid', ]
     inlines = [OrderPlacedInline]
 
 
@@ -70,3 +67,7 @@ class CommentModeAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactModeAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'email', 'message']
+
+@admin.register(Rating)
+class RatingModeAdmin(admin.ModelAdmin):
+    list_display = ['comment', 'product', 'user', 'value']
