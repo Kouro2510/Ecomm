@@ -70,4 +70,4 @@ class ContactModeAdmin(admin.ModelAdmin):
 
 @admin.register(Rating)
 class RatingModeAdmin(admin.ModelAdmin):
-    list_display = ['comment', 'product', 'user', 'value']
+    list_display = [ 'product', 'user', 'value']
