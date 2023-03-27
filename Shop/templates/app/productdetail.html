@@ -6,17 +6,17 @@
         <div class="row flex flex-row-reverse justify-content-between">
             <div>
                 <div class="man">
-                    <div id="image">
-                        <img src="{{ image_first.image.url }}" width="300" height="300"></div>
+                    <div style="width:438px; display:flex; justify-content:center" id="image">
+                        <img src="{{ image_first.image.url }}" width="300" height="300" alt="">
+                    </div>
                 </div>
             </div>
             <div id="thumbs">
                 <div class="sanl">
-                    <ul class="d-flex">
+                    <ul style="width: 28rem;display: flex;flex-wrap: wrap;align-content: center;justify-content: center;height: 9rem;"
+                        class="d-flex">
                         {% for image in images %}
-                            <li class="img" dir="{{ image.image.url }}"><img src="{{ image.image.url }}" width="100"
-                                                                             alt="">
-                            </li>
+                            <li class="img" dir="{{ image.image.url }}"><img src="{{ image.image.url }}" width="100" alt=""></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -40,18 +40,22 @@
             </ul>
             <form action="/add-to-cart" class="d-inline">
                 <input type="hidden" name="prod_id" value="{{ product.id }}">
-                <button type="submit" class=" btn-primary shadow px-5 py-2">Add to Cart</button>
+                <button style="border-radius: 0.2rem" type="submit" class=" btn-primary shadow px-5 py-2">Add to Cart
+                </button>
             </form>
             <form action="/buynow" class="d-inline">
                 <input type="hidden" name="prod_id" value="{{ product.id }}">
-                <button type="submit" class=" btn-warning shadow px-5 py-2 ">Buy Now</button>
+                <button style="border-radius: 0.2rem" type="submit" class=" btn-warning shadow px-5 py-2 ">Buy Now
+                </button>
             </form>
             {% if wishlist %}
-                <a pid={{ product.id }} class="minus-wishlist btn-danger shadow px-5 py-2 ms-4"><i
-                    class="fas fa-lg fa-heart"></i></a>
+                <a class="minus-wishlist btn-danger shadow px-5 py-2 ms-4" style="border-radius: 0.2rem; cursor: pointer" pid={{ product.id }} >
+                <i class="fas fa-lg fa-heart"></i>
+                </a>
             {% else %}
-                <a pid={{ product.id }} class="plus-wishlist btn-success shadow px-5 py-2 ms-4"><i
-                    class="fas fa-lg fa-heart"></i></a>
+                <a class="plus-wishlist btn-success shadow px-5 py-2 ms-4" style="border-radius: 0.2rem; cursor:pointer" pid={{ product.id }} >
+                <i class="fas fa-lg fa-heart"></i>
+                </a>
             {% endif %}
             {% if query %}
                 <h2>Results for "{{ query }}"</h2>
@@ -67,25 +71,44 @@
                     <h3 style="margin-top:1rem">Write your comment...</h3>
                     <form method="post">
                         {% csrf_token %}
+<<<<<<< Updated upstream
+                        <div class="rating">
+                            <input type="radio" name="rating" value="5" id="5" onclick="updateCommentButton()">
+                            <label class="rating-label" for="5">☆</label>
+
+                            <input type="radio" name="rating" value="4" id="4" onclick="updateCommentButton()">
+                            <label class="rating-label" for="4">☆</label>
+
+                            <input type="radio" name="rating" value="3" id="3" onclick="updateCommentButton()">
+                            <label class="rating-label" for="3">☆</label>
+
+                            <input type="radio" name="rating" value="2" id="2" onclick="updateCommentButton()">
+                            <label class="rating-label" for="2">☆</label>
+
+                            <input type="radio" name="rating" value="1" id="1" onclick="updateCommentButton()">
+                            <label class="rating-label" for="1">☆</label>
+                        </div>
+=======
                     <div class="rating"> <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
                 </div>
-                        <label>
-                            <input type="radio" name="value" value="1">
-                        </label>
-                        <label>
-                             <input type="radio" name="value" value="2">
-                        </label>
-                        <label>
-                             <input type="radio" name="value" value="3">
-                        </label>
-                        <label>
-                             <input type="radio" name="value" value="4">
-                        </label>
-                        <label>
-                             <input type="radio" name="value" value="5">
-                        </label>
+{#                        <label>#}
+{#                            <input type="radio" name="value" value="1">#}
+{#                        </label>#}
+{#                        <label>#}
+{#                             <input type="radio" name="value" value="2">#}
+{#                        </label>#}
+{#                        <label>#}
+{#                             <input type="radio" name="value" value="3">#}
+{#                        </label>#}
+{#                        <label>#}
+{#                             <input type="radio" name="value" value="4">#}
+{#                        </label>#}
+{#                        <label>#}
+{#                             <input type="radio" name="value" value="5">#}
+{#                        </label>#}
+>>>>>>> Stashed changes
                         {{ form1.as_p }}
-                        <button type="submit" class="btn btn-primary">Comment</button>
+                        <button type="submit" class="btn btn-primary" id="comment-button" disabled>Comment</button>
                     </form>
                 {% else %}
                     <h2 class="text-center text-danger">Please Login to comment on this post <a
@@ -131,7 +154,7 @@
                 <div style="margin-left: 10%" class="flex-column d-flex justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="border-5">
-                            <img src="{% static "app/images/Neel.png" %}" width="50" height="50"/>
+                            <img src="{% static "app/images/Neel.png" %}" width="50" height="50" alt=""/>
                         </div>
                         <div class="mx-4">
                             <h5>
@@ -159,5 +182,22 @@
             </div>
         {% endfor %}
     </div>
-    </div>
+    <script>
+        function updateCommentButton() {
+            var commentButton = document.getElementById("comment-button");
+            var ratingRadios = document.getElementsByName("rating");
+            var ratingChecked = false;
+
+            // Check if any rating radio button is checked
+            for (var i = 0; i < ratingRadios.length; i++) {
+                if (ratingRadios[i].checked) {
+                    ratingChecked = true;
+                    break;
+                }
+            }
+
+            // Enable/disable "Comment" button
+            commentButton.disabled = !ratingChecked;
+        }
+    </script>
 {% endblock main-content %}

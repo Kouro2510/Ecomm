@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Rating
 from .forms import CustomerRegistrationForm, CustomerProfileForm, CommentForm, ReplyForm, ContactForm
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
@@ -14,15 +13,16 @@ from django.core.mail import send_mail
 
 
 # Create your views here.
-
 def home(request):
     user = request.user
     totalitem = 0
     totalwishlist = 0
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
-        wishitem = len(Wishlist.objects.filter(user=request.user))
-    return render(request, 'app/home.html', locals())
+        totalwishlist = len(Wishlist.objects.filter(user=request.user))
+    product = Product.objects.all()  # truy vấn tất cả các sản phẩm từ database
+    context = {'product': product, 'user': user, 'totalitem': totalitem, 'totalwishlist': totalwishlist}
+    return render(request, 'app/home.html', context)
 
 
 def about(request):
@@ -63,7 +63,7 @@ def product_detail(request, pk):
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
     rating_stars = Rating.objects.filter(product=product)
-    values = request.POST.getlist('value')  # Lấy toàn bộ giá trị value được post lên từ form
+    values = request.POST.getlist('rating')  # Lấy toàn bộ giá trị value được post lên từ form
     print(values)
     user = request.user
     totalitem = 0
@@ -77,7 +77,7 @@ def product_detail(request, pk):
         print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
-                value = int(request.POST.get('value')) # Lấy giá trị value của rating được post lên từ form
+                value = int(request.POST.get('rating'))  # Lấy giá trị value của rating được post lên từ form
                 author = request.user
                 product_id = product
                 description = form1.cleaned_data["description"]
@@ -113,7 +113,6 @@ def product_detail(request, pk):
         'rating_stars': rating_stars,
     }
     return render(request, "app/productdetail.html", context)
-
 
 
 def delete_comment(request, pk):
