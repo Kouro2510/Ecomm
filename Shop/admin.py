@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact, Rating
+from .models import Product, Customer, Cart, Payment, OrderPlaced, Wishlist, Comment, CommentReply, Image, Contact, \
+    Rating
 from django.contrib.auth.models import Group
 
 
@@ -16,9 +17,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     inlines = [ImageInline]
 
     def get_ordering(self, request):
-        if request.user.is_superuser:
-            return ('id', 'title', 'discounted_price', 'category')
-        return ('id', 'title', 'discounted_price', 'category')
+        return 'id', 'title', 'discounted_price', 'category'
 
 
 @admin.register(Customer)
@@ -68,6 +67,7 @@ class CommentModeAdmin(admin.ModelAdmin):
 class ContactModeAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'email', 'message']
 
+
 @admin.register(Rating)
 class RatingModeAdmin(admin.ModelAdmin):
-    list_display = [ 'product', 'user', 'value']
+    list_display = ['comment', 'product', 'user', 'value']

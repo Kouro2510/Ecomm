@@ -6,145 +6,125 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}"/>
-    <link rel="stylesheet" href="{% static 'app/css/all.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'app/css/slider.css' %}"/>
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}"/>
     <link rel="stylesheet" href="{% static 'app/css/ratting.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    {#    <link rel="stylesheet" href="{% static 'app/css/cart-package.css' %}"/>#}
+    {#    <link rel="stylesheet" href="{% static 'app/css/grid.css' %}"/>#}
+    <!--    <link rel="stylesheet" href="checkout.css" />-->
     <title>Daily Product | {% block title %} {% endblock title %}</title>
 </head>
 <body style="height: 100%; border-radius:0.3px">
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/63f875374247f20fefe25ec0/1gq18joop';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/63f875374247f20fefe25ec0/1gq18joop';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
 </script>
 <!--End of Tawk.to Script-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">
-              <img src="{% static "app/images/Neel.png" %}" width="100" height="50"/>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        {% if request.user.is_authenticated %}
-            <div class="collapse navbar-collapse px-5" id="navbarSupportedContent">
-                <ul class="navbar-nav  me-5 mx-5 mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdowns" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Category
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Milk</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Curd</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'MS' %}">Milk Shake</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'LS' %}">Lassi</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'GH' %}">Ghee</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'PN' %}">Paneer</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'CZ' %}">Cheese</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'IC' %}">Ice-creams</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'about' %}">About us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'contact' %}">Contact Us</a>
-                    </li>
-                </ul>
-                <form action="/search" role="search" class="d-flex w-50">
-                    <input name="search" type="search" placeholder="search" aria-label="Search"
-                           class="form-control me-2">
-                    <button class="btn btn-outline-dark" type="submit">Search</button>
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}"> <img src="{% static "app/images/Neel.png" %}" alt="Avatar"></a>
+        </div>
+        <div class="navbar">
+
+            <div class="container">
+                <form action="/search" role="search" class="search">
+                    <input name="search" type="search" placeholder="hãy tìm gì đó" aria-label="search">
+                    <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
-            <ul class="navbar-nav me-auto mb-2  mb-lg-10">
-                <li class="nav-item dropdown mx-2">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ request.user.username|capfirst }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="{% url 'address' %}">Profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
-                        <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Change Password</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+        </div>
+        <div class="user">
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <img src="{% static "app/images/product/default.png" %}" alt="Avatar">
+                    <p>{{ request.user.username|capfirst }}</p>
+                    <ul class="dropdown-menu ">
+                        <li><a class="dropdown-item" href="{% url 'address' %}">Địa chỉ</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders' %}">Đơn hàng</a></li>
+                        <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Thay đổi mật khẩu</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
                     </ul>
-                </li>
-                <li class="nav-item mx-2">
-                    <a href="{% url 'showcart' %}" class="nav-link text-white"><span
-                            class="badge bg-danger">{% if totalitem > 0 %} {{ totalitem }} {% endif %}</span>Your Cart</a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a href="{% url 'showwishlist' %}" class="nav-link text-white"><span
-                            class="badge bg-danger">{% if wishitem > 0 %} {{ wishitem }} {% endif %}</span> Wishlist
+                </div>
+                <div class="user-item">
+                    <a href="{% url 'showcart' %}" class="fa-solid fa-cart-shopping fa-1x">
+                        {% if totalitem > 0 %}
+                            <span class="badge bg-danger"> {{ totalitem }} </span>
+                        {% endif %}
                     </a>
-                </li>
-            </ul>
-        {% else %}
-            <div class="collapse navbar-collapse" id="navbarSupportedContentnotAuth">
-                <ul class="navbar-nav me-5 mx-5 mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </div>
+                <div class=user-item>
+                    <a href="{% url 'showwishlist' %}" class="fa-solid fa-heart fa-1x">
+                        {% if wishitem > 0 %}
+                            <span class="badge bg-danger"> {{ wishitem }} </span>
+                        {% endif %}
+                    </a>
+                </div>
+            {% else %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-2">
+                        <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdowns" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Category
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Milk</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Curd</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'MS' %}">Milk Shake</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'LS' %}">Lassi</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'GH' %}">Ghee</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'PN' %}">Paneer</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'CZ' %}">Cheese</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'IC' %}">Ice-creams</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'about' %}">About us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'contact' %}">Contact Us</a>
+                    <li class="nav-item mx-2">
+                        <a href="{% url 'customerregistration' %}" class="nav-link text-white">Registration</a>
                     </li>
                 </ul>
-                <form action="/search" role="search" class="d-flex w-50">
-                    <input name="search" type="search" placeholder="search" aria-label="Search"
-                           class="form-control me-2">
-                    <button class="btn btn-outline-dark" type="submit">Search</button>
-                </form>
-            </div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item mx-2">
-                    <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a href="{% url 'customerregistration' %}" class="nav-link text-white">Registration</a>
-                </li>
-            </ul>
-        {% endif %}
-    </div>
-</nav>
+            {% endif %}
+        </div>
+    </nav>
+</header>
 {% block banner-slider %}{% endblock banner-slider %}
 {% block information %}{% endblock information %}
 {% block main-content %}{% endblock main-content %}
+<footer>
+    <div class="footer-left">
+        <img src="{% static "app/images/Neel.png" %}" alt="Logo">
+        <div class="info">
+            <i class="fas fa-map"></i>
+            <p>Địa chỉ: 123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
+        </div>
+        <div class="info">
+            <i class="fas fa-phone"></i>
+            <p>Số điện thoại: 0123456789</p>
+        </div>
+        <div class="info">
+            <i class="fas fa-fax"></i>
+            <p>Số fax: 0123456789</p>
+        </div>
+        <div class="info">
+            <i class="fas fa-envelope"></i>
+            <p>Số điện thoại: 0123456789</p>
+        </div>
+        <div class="contact">
+            <a href="{% url 'contact' %}" style="margin-bottom: 5%" class="btn btn-primary mt-3 ">Write a contact
+                form</a>
+            </form>
+        </div>
+    </div>
+    <div class="footer-middle">
+        <h3>Giới thiệu về chúng tôi</h3>
+        <p>Chúng tôi là một công ty chuyên cung cấp các sản phẩm chất lượng cao với giá cả phải chăng.</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423.9450030400263!2d106.62724619054615!3d10.853529795372872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175298a797a214b%3A0x47b4978a89981367!2sC%C3%B4ng%20ty%20TNHH%20HOPEE!5e0!3m2!1svi!2s!4v1679639703121!5m2!1svi!2s"
+                width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</footer>
+<footer>
+    <div class="coppy right ">
+        <p id="timenow"></p>
+    </div>
+
+</footer>
 {% block payment-gateway %} {% endblock payment-gateway %}
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"

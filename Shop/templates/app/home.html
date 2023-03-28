@@ -15,132 +15,74 @@
 </head>
 {% block title %}Home{% endblock title %}
 {% block banner-slider %}
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{% static 'app/images/banner/b1.jpg' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'app/images/banner/b2.jpg' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'app/images/banner/b3.jpg' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'app/images/banner/b4.jpg' %}" class="d-;block w-100" alt="...">
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide current-slide"><img src="{% static 'app/images/banner/b1.jpg' %}" alt="Slide 1"></div>
+            <div class="slide"><img src="{% static 'app/images/banner/b2.jpg' %}" alt="Slide 2"></div>
+            <div class="slide"><img src="{% static 'app/images/banner/b3.jpg' %}" alt="Slide 3"></div>
+            <div class="slide"><img src="{% static 'app/images/banner/b4.jpg' %}" alt="Slide 4"></div>
         </div>
     </div>
-</div>
 {% endblock banner-slider %}
 {% block information %}
-<div class="container">
-    <div class="row bg-success text-center p-5 text-white border-bottom shadow">
-        <h1>Product</h1>
-        <small class="fs-5">
-            iaculis nunc sed augue lacus viverra vitae congue eu consequat ac felis donec et odio pellentesque diam
-            volutpat commodo sed
-            iaculis nunc sed augue lacus viverra vitae congue eu consequat ac felis donec et odio pellentesque diam
-            volutpat commodo sed
+    <div class="container-banner banner">
+        <h1 class="content">
+            Sản phẩm hot
+        </h1>
+        <small>
+            Chuyên cung cấp những sản phẩm về sữa chất lượng nhất
         </small>
     </div>
-</div>
 {% endblock information %}
 
 {% block main-content %}
-<div class="container">
-    <h2>Dairy Product</h2>
-    <br><br>
-    <div class="row container">
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk smbg ">
-                <a class="text-decoration-none" href="{% url 'category' 'GH' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/buffalo-ghee.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Ghee</p>
-                    </div>
-                </a>
-            </div>
+    <div class="container-product">
+        <div class="sidebar">
+            <ul>
+                <li><a class="dropdown-item" href="{% url 'category' 'ML' %}">Milk</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'CR' %}">Curd</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'MS' %}">Milk Shake</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'LS' %}">Lassi</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'GH' %}">Ghee</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'PN' %}">Paneer</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'CZ' %}">Cheese</a></li>
+                <li><a class="dropdown-item" href="{% url 'category' 'IC' %}">Ice-creams</a></li>
+            </ul>
         </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk curdbgpro">
-                <a  class="text-decoration-none" href="{% url 'category' 'CR' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/curd-total.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Crud</p>
+        <div class="product-item">
+            {% for product in product %}
+                <div class="product">
+                    <div class="product-image">
+                        <img src="{{ product.product_image.url }}" alt="Product 1">
                     </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk buttermilk">
-                <a  class="text-decoration-none" href="{% url 'category' 'PN' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/paneer-fresh.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Paneer</p>
+                    <div class="product-details">
+                        <h2>{{ product.title }}</h2>
+                        {% if product.discounted_price != 0 %}
+                            <p>{{ product.discounted_price }}$/<small>
+                                <del>-{{ product.selling_price }}$</del>
+                                {% else %}
+                            <p>{{ product.selling_price }}$</p>
+                        {% endif %}
+                        </small></p>
+                        <div class="flex">
+                            {% if user.is_authenticated %}
+                                <form action="/add-to-cart" class="d-inline">
+                                    <input type="hidden" name="prod_id" value="{{ product.id }}">
+                                    <button style="border-radius: 0.2rem" type="submit" class=" add">Add to Cart
+                                    </button>
+                                </form>
+                                <button class="view"><a href="{% url 'product-detail' product.id %}">View Details</a>
+                                </button>
+                            {% else %}
+                                <button class="add"><a href="{% url 'login' %}">View Details</a></button>
+                                <button class="view"><a href="{% url 'login' %}">View Details</a></button>
+                            {% endif %}
+                        </div>
                     </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk smbg">
-                <a  class="text-decoration-none" href="{% url 'category' 'MS' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/milk-shake-strawberry.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Milk Shake</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk curdbgpro">
-                <a  class="text-decoration-none" href="{% url 'category' 'IC' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/icbars.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Ice Creams</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk buttermilk">
-                <a  class="text-decoration-none" href="{% url 'category' 'ML' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/tonemilk.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Milk</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk buttermilk">
-                <a  class="text-decoration-none" href="{% url 'category' 'CZ' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" style="width: 100%" src="{% static 'app/images/product/mozzarellacheese.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Cheese</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 mi-go wow fadeInUp col test-center mb-4" data-wow-duration="1s" data-wow-delay="0.6s"
-             style="animation-duration: 1s; animation-delay: 0.6s;animation-name: none;">
-            <div class="goodnessec buttermilk buttermilk">
-                <a  class="text-decoration-none" href="{% url 'category' 'LS' %}">
-                    <div class="goodnesseccont text-center">
-                        <img height="200" width="200" src="{% static 'app/images/product/sweet-lassi.png' %}" class="img-responsive center-block" alt="">
-                        <p class="mlkpro">Lassi</p>
-                    </div>
-                </a>
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-</div>
-<br/><br/>
+    <br/><br/>
 
 {% endblock main-content %}

@@ -16,10 +16,12 @@
                     {% endif %}
 <form method="post">
   <h2 class="text-center">Contact with us</h2>
+    <div class="flex flex-col">
     {% csrf_token %}
     {{ form }}
+        </div>
  <button style="margin-bottom: 5%" type="submit" class="btn btn-primary mt-3 ">Submit</button>
-</form>
 
+</form>
 </div>
 {% endblock main-content %}

@@ -67,6 +67,16 @@ ul {
     margin-right: 30px;
 
 }
+
+.rate{
+
+	border-bottom-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+
+}
+
+
+
 .rating {
     display: flex;
     flex-direction: row-reverse;
@@ -114,12 +124,23 @@ ul {
 
 .rating-submit{
 	border-radius: 15px;
-	color: #fff;
+	color: #FFD600;
 	    height: 49px;
 }
 
 
 .rating-submit:hover{
 
+<<<<<<< Updated upstream
 	color: #fff;
+}
+.rating-label {
+    color: #FFD600!important;
+=======
+	color: #FFD600;
+}
+
+.label {
+    color: #FFD600;
+>>>>>>> Stashed changes
 }
