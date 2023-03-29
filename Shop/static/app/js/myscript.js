@@ -1,7 +1,6 @@
 $('.plus-cart').click(function () {
     var id = $(this).attr("pid").toString();
     var eml = this.parentNode.children[2];
-    console.log("pid=", id);
     $.ajax({
         type: "GET",
         url: "/pluscart",
@@ -9,9 +8,9 @@ $('.plus-cart').click(function () {
             prod_id: id
         },
         success: function (data) {
-            console.log("data = ',data");
             eml.innerText = data.quantity;
             document.getElementById("amount").innerText = data.amount;
+            document.getElementById("test").innerText = data.amount;
             document.getElementById("totalamount").innerText = data.totalamount;
         }
     })
@@ -29,6 +28,7 @@ $('.minus-cart').click(function () {
         },
         success: function (data) {
             eml.innerText = data.quantity;
+             document.getElementById("test").innerText = data.amount;
             document.getElementById("amount").innerText = data.amount;
             document.getElementById("totalamount").innerText = data.totalamount;
         }
