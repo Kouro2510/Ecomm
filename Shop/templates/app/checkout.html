@@ -1,4 +1,3 @@
-
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Buy Now{% endblock title %}
@@ -22,118 +21,134 @@
                                  height="100" width="100">
                             <div class="mx-3"><h5>Product: {{ item.product.title|title }}</h5>
                                 <p>Quantity: {{ item.quantity }}</p>
-                             {% if item.product.discounted_price == 0 %}
-                              <p class="fw-blod">Price: {{item.product.selling_price|floatformat:"-0"}}$</p></div>
-                            {% else %}
-                             <p class="fw-blod">Price: {{ item.product.discounted_price|floatformat:"-0"}}$</p></div>
-                            {% endif %}
-                        </div>
+                                {% if item.product.discounted_price == 0 %}
+                                    <p class="fw-blod">Price: {{ item.product.selling_price|floatformat:"-0"}}$</p>
+                                    </div>
+                                {% else %}
+                                    <p class="fw-blod">Price: {{ item.product.discounted_price|floatformat:"-0"}}$</p>
+                                    </div>
+                                {% endif %}
+                    </div>
                     </div>
                 {% endfor %}
-                <p class="fw-blod">Total Cost + Ship Fee 40$= {{ totalamount|floatformat:"-0" }}$</p>
-                <small>Term and Condition:</small>
-            </div>
-            <div class="col-sm-4 offset-sm-1">
-                <form method="post" id="myform">
+            <p class="fw-blod">Total Cost + Ship Fee 40$= {{ totalamount|floatformat:"-0" }}$</p>
+            <small>Term and Condition:</small>
+        </div>
+        <div class="col-sm-4 offset-sm-1">
+            <form method="post" id="myform">
                 <h4>Select Shipping Address and Payment Method</h4>
-                    <hr>
-                    {% csrf_token %}
-                    {% if add %}
-                                            <div class="  form-check mt-2 ">
-                    <input name="address" id="address1" onclick="updatePaymentButton()" class="form-check-input" type="radio" data-bs-toggle="collapse"
-                                       data-bs-target="#collapseExample" aria-expanded="false"
-                                       aria-controls="collapseExample">
-                                Select Shipping Address
+                <hr>
+                {% csrf_token %}
+                {% if add %}
+                    <div class="  form-check mt-2 ">
+                        <input name="address" id="address1"
+                               onclick="updatePaymentButton()" class="form-check-input" type="radio"
+                               data-bs-toggle="collapse"
+                               data-bs-target="#collapseExample" aria-expanded="false"
+                               aria-controls="collapseExample">
+                        Select Shipping Address
+
                         {% for ad in add %}
-                                <div class="collapse" id="collapseExample">
-                                    <input type="radio" name="custid" id="custadd{{ forloop.counter }}"
-                                           value="{{ ad.id }}"
-                                           class="form-check-input">
-                                    <label for="custadd{{ forloop.counter }}" class="form-check-label fw-bold">
-                                        Customer: {{ ad.name|title }}</label>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p>Mobile: {{ ad.mobile }}</p>
-                                            <p>{{ ad.locality }} {{ ad.city }} {{ ad.area }} - {{ ad.zipcode }}</p>
-                                        </div>
+                            <div class="collapse" id="collapseExample">
+                                <input type="radio" name="custid" id="custadd{{ forloop.counter }}"
+                                       value="{{ ad.id }}"
+                                       class="form-check-input">
+                                <label for="custadd{{ forloop.counter }}" class="form-check-label fw-bold">
+                                    Customer: {{ ad.name|title }}</label>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p>Mobile: {{ ad.mobile }}</p>
+                                        <p>{{ ad.locality }} {{ ad.city }} {{ ad.area }} - {{ ad.zipcode }}</p>
                                     </div>
                                 </div>
+                            </div>
+
                         {% endfor %}
-                         </div>
-                    {% else %}
-                        <li class="d-grid"><a
-                            href="{% url 'profile' %}" class="btn btn-danger">Please Update your shipping address</a></li>
-                    {% endif %}
-                    <div class="  form-check mt-2 mb-5">
-                        <input class="form-check-input" type="radio" data-bs-toggle="collapse"
-                                data-bs-target="#Payment-Method" aria-expanded="false"
-                                aria-controls="Payment-Method">
-                            Select Payment Method
-                        <div class="collapse" id="Payment-Method">
-                            <div class="form-check">
-                                <input data-bs-toggle="collapse"
-                                data-bs-target="#Payment" aria-expanded="false"
-                                aria-controls="Payment" type="radio" class="form-check-input" id="Check-Male" name="Payment" value="Card"
-                                       required>
-                                <label class="form-check-label" for="Check-Male">Card</label>
-                                <div class="collapse" id="Payment">
-                                    <p>Thông tin chuyển khoản:</p>
-                                        <p>Số Tài Khoản: 777841385</p>
-                                        <p>Vũ Hoàng Thiên Ân - VietComBank Chi nhánh HCM </p>
-                                    <img style="width: 100%" src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}" class="img-responsive center-block" alt="">
-                                </div>
-                            </div>
-                            <div class="form-check">
-                                <input data-bs-toggle="collapse"
-                                data-bs-target="#MoMo" aria-expanded="false"
-                                aria-controls="MoMo" type="radio" class="form-check-input" id="Check-Male" name="Payment" value="MoMo"
-                                       required>
-                                <label class="form-check-label" for="Check-Male">MoMo</label>
-                                <div class="collapse" id="MoMo">
-                                    <p>Thông tin chuyển khoản:</p>
-                                        <p>Số Tài Khoản: 0777841385</p>
-                                        <p>Vũ Hoàng Thiên Ân </p>
-                                    <img style="width: 100%" src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}" class="img-responsive center-block" alt="">
-                                </div>
-                            </div>
-
-                            <div class="form-check mb-3">
-                                <input type="radio" class="form-check-input" id="Check-Female" name="Payment"
-                                       value="Wallet"
-                                       required>
-                                <label class="form-check-label" for="Check-Female">Wallet</label>
+                    </div>
+                {% else %}
+                    <li class="d-grid"><a
+                            href="{% url 'profile' %}" class="btn btn-danger">Please Update your shipping address</a>
+                    </li>
+                {% endif %}
+                <div class="  form-check mt-2 mb-5">
+                    <input class="form-check-input" type="radio" data-bs-toggle="collapse"
+                           data-bs-target="#Payment-Method" aria-expanded="false"
+                           aria-controls="Payment-Method">
+                    Select Payment Method
+                    <div class="collapse" id="Payment-Method">
+                        <div class="form-check">
+                            <input data-bs-toggle="collapse"
+                                   data-bs-target="#Payment" aria-expanded="false"
+                                   aria-controls="Payment" type="radio" class="form-check-input" id="Check-Male"
+                                   name="Payment" value="Card"
+                                   required>
+                            <label class="form-check-label" for="Check-Male">Card</label>
+                            <div class="collapse" id="Payment">
+                                <p>Thông tin chuyển khoản:</p>
+                                <p>Số Tài Khoản: 777841385</p>
+                                <p>Vũ Hoàng Thiên Ân - VietComBank Chi nhánh HCM </p>
+                                <img style="width: 100%"
+                                     src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"
+                                     class="img-responsive center-block" alt="">
                             </div>
                         </div>
-                <div class="mt-2 mb-3">
-                            <label for="totamount" class="form-label">Total Amount</label>
-                            <input style="cursor:default" type="number" name="totalamount" placeholder="{{ totalamount|floatformat:"-0" }}$" readonly
-                                   class="form-control">
+                        <div class="form-check">
+                            <input data-bs-toggle="collapse"
+                                   data-bs-target="#MoMo" aria-expanded="false"
+                                   aria-controls="MoMo" type="radio" class="form-check-input" id="Check-Male"
+                                   name="Payment" value="MoMo"
+                                   required>
+                            <label class="form-check-label" for="Check-Male">MoMo</label>
+                            <div class="collapse" id="MoMo">
+                                <p>Thông tin chuyển khoản:</p>
+                                <p>Số Tài Khoản: 0777841385</p>
+                                <p>Vũ Hoàng Thiên Ân </p>
+                                <img style="width: 100%"
+                                     src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"
+                                     class="img-responsive center-block" alt="">
+                            </div>
                         </div>
-                        <div class="text-end">
 
-                            <button id="str-button1" type="submit" class="btn btn-warning mt-3 px-5 fw-bold" disabled>Payment</button>
+                        <div class="form-check mb-3">
+                            <input type="radio" class="form-check-input" id="Check-Female" name="Payment"
+                                   value="Wallet"
+                                   required>
+                            <label class="form-check-label" for="Check-Female">Wallet</label>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="mt-2 mb-3">
+                        <label for="totamount" class="form-label">Total Amount</label>
+                        <input style="cursor:default" type="number" name="totalamount"
+                               placeholder="{{ totalamount|floatformat:"-0" }}$" readonly
+                               class="form-control">
+                    </div>
+                    <div class="text-end">
+
+                        <button id="str-button1" type="submit" class="btn btn-warning mt-3 px-5 fw-bold" disabled>
+                            Payment
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-<script>
-function updatePaymentButton() {
-  var paymentButton = document.getElementById("str-button1");
-  var addressRadios = document.getElementsByName("address");
-  var addressChecked = false;
+    </div>
+    <script>
+        function updatePaymentButton() {
+            var paymentButton = document.getElementById("str-button1");
+            var addressRadios = document.getElementsByName("address");
+            var addressChecked = false;
 
-  // Check if any address radio button is checked
-  for (var i = 0; i < addressRadios.length; i++) {
-    if (addressRadios[i].checked) {
-      addressChecked = true;
-      break;
-    }
-  }
+            // Check if any address radio button is checked
+            for (var i = 0; i < addressRadios.length; i++) {
+                if (addressRadios[i].checked) {
+                    addressChecked = true;
+                    break;
+                }
+            }
 
-  // Enable/disable "Payment" button
-  paymentButton.disabled = !addressChecked;
-}
-</script>
+            // Enable/disable "Payment" button
+            paymentButton.disabled = !addressChecked;
+        }
+    </script>
 {% endblock main-content %}

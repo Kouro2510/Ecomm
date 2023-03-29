@@ -68,10 +68,10 @@
                             {% if user.is_authenticated %}
                                 <form action="/add-to-cart" class="d-inline">
                                     <input type="hidden" name="prod_id" value="{{ product.id }}">
-                                    <button style="border-radius: 0.2rem" type="submit" class=" add">Add to Cart
+                                    <button style="border-radius: 0.2rem" type="submit" class=" add">Thêm vào giỏ hàng
                                     </button>
                                 </form>
-                                <button class="view"><a href="{% url 'product-detail' product.id %}">View Details</a>
+                                <button style="border-radius: 0.5rem" class="view"><a href="{% url 'product-detail' product.id %}">Xem chi tiết</a>
                                 </button>
                             {% else %}
                                 <button class="add"><a href="{% url 'login' %}">View Details</a></button>

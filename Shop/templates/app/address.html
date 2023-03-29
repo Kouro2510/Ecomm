@@ -8,18 +8,18 @@
 
             <div class="col-sm-2 border-end">
                 <ul class="list-unstyled">
-                    <li class="d-grid"><a href="{% url 'address' %}" class="disabled btn btn-secondary">Your Address</a></li>
+                    <li class="d-grid"><a
+                            href="{% url 'profile' %}" class="btn btn-warning">More Address</a></li>
                     <li class="d-grid"><a href="{% url 'orders' %}" style="margin-top: 0.5rem" class="btn btn-success">Orders</a></li>
                     <li class="d-grid"><a href="{% url 'passwordchange' %}" style="margin-top: 0.5rem" class="btn btn-primary">Change Password</a></li>
-                    <li style="right: 6.5%; top: 17%; position: absolute; width: 10%" class="d-grid"><a
-                            href="{% url 'profile' %}" class="btn btn-primary">Add Address</a></li>
+
 
                 </ul>
             </div>
             <div class="col-sm-9 offset-sm-1">
                 <div class="row">
                     {% for ad in add %}
-                        <div class="co-sm-3">
+                        <div class="col-sm-3">
                             <div class="card m-2">
                                 <div class="card-body">
                                     <h3>Address {{ forloop.counter }}</h3>
