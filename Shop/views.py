@@ -372,7 +372,13 @@ def show_cart(request):
         amount = amount + value
         cart_empty = True
     totalamount = amount + 40
-    return render(request, 'app/addtocart.html', locals())
+    context = {
+       'value': value,
+        'user':user,
+        'cart':cart,
+
+    }
+    return render(request, 'app/addtocart.html', context)
 
 
 class checkout(View):

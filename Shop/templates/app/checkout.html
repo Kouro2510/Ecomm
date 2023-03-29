@@ -2,137 +2,195 @@
 {% load static %}
 {% block title %}Buy Now{% endblock title %}
 {% block main-content %}
-    <div class="container">
-        {% if messages %}
-            {% for msg in messages %}
-                <div class="alert alert-danger" role="alert">
-                    {{ msg }}
+    <section>
+    <div class="container checkout">
+        <h2 class="title">Thông tin đơn hàng</h2>
+        <div class="container-address address" id="open-modal">
+            <div class="address-details">
+                <i class="fas fa-map-location-dot fa-2x "></i>
+                <div>
+                    <p id="FullName">Tên : Lê Thanh Phương</p>
+                    <p id="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
+                    <p id="Phone">SDT: 09335248</p>
                 </div>
-            {% endfor %}
-        {% endif %}
-        <div class="row mt-5">
-            <div class="col-sm-6">
-                <h4>Order Summary</h4>
-                <hr>
-                {% for item in cart_items %}
-                    <div class="card mb-2">
-                        <div class="card-body d-flex">
-                            <img src="{{ item.product.product_image.url }}" alt=""
-                                 height="100" width="100">
-                            <div class="mx-3"><h5>Product: {{ item.product.title|title }}</h5>
-                                <p>Quantity: {{ item.quantity }}</p>
-                                {% if item.product.discounted_price == 0 %}
-                                    <p class="fw-blod">Price: {{ item.product.selling_price|floatformat:"-0"}}$</p>
-                                    </div>
-                                {% else %}
-                                    <p class="fw-blod">Price: {{ item.product.discounted_price|floatformat:"-0"}}$</p>
-                                    </div>
-                                {% endif %}
-                    </div>
-                    </div>
-                {% endfor %}
-            <p class="fw-blod">Total Cost + Ship Fee 40$= {{ totalamount|floatformat:"-0" }}$</p>
-            <small>Term and Condition:</small>
+            </div>
+            <button class="change-icons"><i class="fas fa-2x fa-angle-right"></i></button>
         </div>
-        <div class="col-sm-4 offset-sm-1">
-            <form method="post" id="myform">
-                <h4>Select Shipping Address and Payment Method</h4>
-                <hr>
-                {% csrf_token %}
-                {% if add %}
-                    <div class="  form-check mt-2 ">
-                        <input name="address" id="address1"
-                               onclick="updatePaymentButton()" class="form-check-input" type="radio"
-                               data-bs-toggle="collapse"
-                               data-bs-target="#collapseExample" aria-expanded="false"
-                               aria-controls="collapseExample">
-                        Select Shipping Address
+        <div class="checkout-section">
+            <h2>Thông tin sản phẩm</h2>
+            <div class="product-item">
+                <div class="checkout-details">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên</th>
+                            <th>Giá Tiền</th>
+                            <th>Số lượng</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                        </thead>
+                        {% for item in cart_items %}
+                        <tbody>
+                        <tr>
+                            <td class="checkout-img">
+                                <img src="{{ item.product.product_image.url }}" alt="Product Image">
+                            </td>
+                            <td>{{ item.product.title|title }}</td>
+                            <td>{{ item.quantity }}</td>
+                            {% if item.product.discounted_price == 0 %}
+                            <td>{{item.product.selling_price|floatformat:"-0"}}$</td>
+                            {% else %}
+                            <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
+                            {% endif %}
+                            <th>{{value|floatformat:"-0"}}$</th>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-section payment">
+            <div>
+                <div class="payment-options">
+                    <button class="btn-buy-now active-checkout" id="payment">Mua trực tiếp</button>
+                    <button class="btn-card-payment " id="payment">Thanh toán bằng thẻ ngân hàng</button>
+                    <button class="btn-momo-payment " id="payment">Thanh toán bằng Momo</button>
+                </div>
 
-                        {% for ad in add %}
-                            <div class="collapse" id="collapseExample">
-                                <input type="radio" name="custid" id="custadd{{ forloop.counter }}"
-                                       value="{{ ad.id }}"
-                                       class="form-check-input">
-                                <label for="custadd{{ forloop.counter }}" class="form-check-label fw-bold">
-                                    Customer: {{ ad.name|title }}</label>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p>Mobile: {{ ad.mobile }}</p>
-                                        <p>{{ ad.locality }} {{ ad.city }} {{ ad.area }} - {{ ad.zipcode }}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        {% endfor %}
+                <div class="payment-details">
+                    <div class="buy-now-details">
                     </div>
-                {% else %}
-                    <li class="d-grid"><a
-                            href="{% url 'profile' %}" class="btn btn-danger">Please Update your shipping address</a>
-                    </li>
-                {% endif %}
-                <div class="  form-check mt-2 mb-5">
-                    <input class="form-check-input" type="radio" data-bs-toggle="collapse"
-                           data-bs-target="#Payment-Method" aria-expanded="false"
-                           aria-controls="Payment-Method">
-                    Select Payment Method
-                    <div class="collapse" id="Payment-Method">
-                        <div class="form-check">
-                            <input data-bs-toggle="collapse"
-                                   data-bs-target="#Payment" aria-expanded="false"
-                                   aria-controls="Payment" type="radio" class="form-check-input" id="Check-Male"
-                                   name="Payment" value="Card"
-                                   required>
-                            <label class="form-check-label" for="Check-Male">Card</label>
-                            <div class="collapse" id="Payment">
-                                <p>Thông tin chuyển khoản:</p>
-                                <p>Số Tài Khoản: 777841385</p>
-                                <p>Vũ Hoàng Thiên Ân - VietComBank Chi nhánh HCM </p>
-                                <img style="width: 100%"
-                                     src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"
-                                     class="img-responsive center-block" alt="">
-                            </div>
-                        </div>
-                        <div class="form-check">
-                            <input data-bs-toggle="collapse"
-                                   data-bs-target="#MoMo" aria-expanded="false"
-                                   aria-controls="MoMo" type="radio" class="form-check-input" id="Check-Male"
-                                   name="Payment" value="MoMo"
-                                   required>
-                            <label class="form-check-label" for="Check-Male">MoMo</label>
-                            <div class="collapse" id="MoMo">
-                                <p>Thông tin chuyển khoản:</p>
-                                <p>Số Tài Khoản: 0777841385</p>
-                                <p>Vũ Hoàng Thiên Ân </p>
-                                <img style="width: 100%"
-                                     src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"
-                                     class="img-responsive center-block" alt="">
-                            </div>
-                        </div>
-
-                        <div class="form-check mb-3">
-                            <input type="radio" class="form-check-input" id="Check-Female" name="Payment"
-                                   value="Wallet"
-                                   required>
-                            <label class="form-check-label" for="Check-Female">Wallet</label>
-                        </div>
+                    <div class="card-payment-details">
+                        <p>Chọn thẻ thanh toán</p>
+                        <ul class="payment-card">
+                            <li class="card">
+                                <label>Thẻ Visa
+                                    <input type="radio" value="Visa" name="Card">
+                                </label>
+                                <img src="asset/payment/payment.png"/>
+                            </li>
+                            <li class="card">
+                                <label>Thẻ Mastercard
+                                    <input type="radio" value="Mastercard" name="Card">
+                                </label>
+                                <img src="asset/payment/payment.png"/>
+                            </li>
+                            <li class="card">
+                                <label>Thẻ ATM nội địa
+                                    <input type="radio" value="ATM" name="Card">
+                                </label>
+                                <img src="asset/payment/payment.png"/>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="mt-2 mb-3">
-                        <label for="totamount" class="form-label">Total Amount</label>
-                        <input style="cursor:default" type="number" name="totalamount"
-                               placeholder="{{ totalamount|floatformat:"-0" }}$" readonly
-                               class="form-control">
-                    </div>
-                    <div class="text-end">
-
-                        <button id="str-button1" type="submit" class="btn btn-warning mt-3 px-5 fw-bold" disabled>
-                            Payment
-                        </button>
+                    <div class="momo-payment-details">
+                        <p>Chọn ví thanh toán</p>
+                        <ul>
+                            <ul class="payment-card">
+                                <li class="card">
+                                    <label>Ví Momo
+                                        <input type="radio" value="Visa" name="Card">
+                                    </label>
+                                    <img src="asset/payment/payment.png"/>
+                                </li>
+                                <li class="card">
+                                    <label>Ví Zalopay
+                                        <input type="radio" value="Mastercard" name="Card">
+                                    </label>
+                                    <img src="asset/payment/payment.png"/>
+                                </li>
+                                <li class="card">
+                                    <label>Thẻ ATM nội địa
+                                        <input type="radio" value="ATM" name="Card">
+                                    </label>
+                                    <img src="asset/payment/payment.png"/>
+                                </li>
+                            </ul>
+                        </ul>
                     </div>
                 </div>
-            </form>
+            </div>
+            <div class="shipping">
+                <div class="shipping-details">
+                    <p>Phí vận chuyển:</p>
+                    <h3>20$</h3>
+                </div>
+                <div class="shipping-details">
+                    <p>Giá tiền:</p>
+                    <h3>20$</h3>
+                </div>
+                <div class="shipping-details">
+                    <p>Tổng tiền:</p>
+                    <h3>20$</h3>
+                </div>
+            </div>
+        </div>
+        <button class="checkout-button" id="modal-payment">Thanh toán</button>
+    </div>
+</section>
+<section>
+    <div id="my-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+            </div>
+            <button class="change-value">
+                <div class="address">
+                    <div class="address-details">
+                        <i class="fas fa-map-location-dot fa-2x "></i>
+                        <div class="address-change">
+                            <p class="Name">Tên : Lê Thanh Phương 1</p>
+                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
+                            <p class="Phone">SDT: 09335248</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-2x fa-angle-right icon"></i>
+                </div>
+            </button>
+            <hr/>
+            <button class="change-value">
+                <div class="address">
+                    <div class="address-details">
+                        <i class="fas fa-map-location-dot fa-2x "></i>
+                        <div class="address-change">
+                            <p class="Name">Tên : Lê Thanh Phương 2</p>
+                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
+                            <p class="Phone">SDT: 09335248</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-2x fa-angle-right icon"></i>
+                </div>
+            </button>
+            <hr/>
+            <button class="change-value">
+                <div class="address">
+                    <div class="address-details">
+                        <i class="fas fa-map-location-dot fa-2x "></i>
+                        <div class="address-change">
+                            <p class="Name">Tên : Lê Thanh Phương 3</p>
+                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
+                            <p class="Phone">SDT: 09335248</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-2x fa-angle-right icon"></i>
+                </div>
+            </button>
+
+            <hr/>
         </div>
     </div>
+</section>
+<section>
+    <div id="payment-modal" class="modal">
+        <div class=" payment-content">
+            <iframe src="http://giphy.com/embed/ibolLe3mOqHE3PQTtk" width="200" height="200" frameborder="0" class="giphy-embed" allowFullScreen></iframe>
+            <p> Thanh toán thành công</p>
+            <button class="close-payment">close</button>
+        </div>
     </div>
+</section>
     <script>
         function updatePaymentButton() {
             var paymentButton = document.getElementById("str-button1");

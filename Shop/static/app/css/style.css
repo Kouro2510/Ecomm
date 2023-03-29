@@ -1827,7 +1827,7 @@ html>body> .container> .row-cols-4 {
     color: blue;
 }
 
-.plus-wishlist {
+.plus-wishlist, .minus-wishlist {
     cursor: pointer;
 }
 
