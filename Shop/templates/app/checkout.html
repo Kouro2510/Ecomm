@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>Hình ảnh</th>
                                     <th>Tên</th>
-                                    <th>Giá Tiền</th>
+                                    <th>Giá Tiền($)</th>
                                     <th>Số lượng</th>
                                     <th>Tổng tiền</th>
                                 </tr>
@@ -41,15 +41,15 @@
                                         </td>
                                         <td>{{ item.product.title|title }}</td>
                                         {% if item.product.discounted_price == 0 %}
-                                            <td><p class="price">{{ item.product.selling_price|floatformat:"-0" }}</p>
-                                                <span>$</span></td>
+                                            <td><div class="price">{{ item.product.selling_price|floatformat:"-0" }}</div>
+                                                </td>
                                         {% else %}
                                             <td>
-                                                {{ item.product.discounted_price|floatformat:"-0" }}
-                                                <span>$</span></td>
+                                                <div class="price">{{ item.product.discounted_price|floatformat:"-0" }}</div>
+                                                </td>
                                         {% endif %}
                                         <td class="quantity">{{ item.quantity }}</td>
-                                        <th class="total">{{ totalamount|floatformat:"-0" }}<span>$</span></th>
+                                        <th class="total"></th>
                                     </tr>
                                     </tbody>
                                 {% endfor %}

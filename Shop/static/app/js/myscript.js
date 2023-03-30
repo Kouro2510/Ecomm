@@ -1,8 +1,11 @@
 function updateTotal() {
     var products = document.querySelectorAll(".cart-product");
+    console.log(products)
     for (var i = 0; i < products.length; i++) {
         var price = products[i].querySelector(".price").innerText;
+        console.log(price)
         var quantity = products[i].querySelector(".quantity").innerText;
+        console.log(quantity)
         var total = price * quantity;
         products[i].querySelector(".total").innerText = total.toFixed(2);
     }
