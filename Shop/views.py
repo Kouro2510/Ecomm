@@ -355,7 +355,7 @@ def show_cart(request):
         amount = amount + value
         cart_empty = True
     totalamount = amount + 40
-
+    price=value
     return render(request, 'app/addtocart.html', locals())
 
 

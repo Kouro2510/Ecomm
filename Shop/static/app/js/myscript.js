@@ -1,3 +1,16 @@
+function updateTotal() {
+    var products = document.querySelectorAll(".cart-product");
+    console.log(products);
+    for (var i = 0; i < products.length; i++) {
+        var price = products[i].querySelector(".price").innerText;
+        console.log(price);
+        var quantity = products[i].querySelector(".quantity").innerText;
+        console.log(quantity);
+        var total = price * quantity;
+        products[i].querySelector(".total").innerText = total.toFixed(2);
+    }
+}
+
 $('.plus-cart').click(function () {
     var id = $(this).attr("pid").toString();
     var eml = this.parentNode.children[2];
@@ -9,8 +22,8 @@ $('.plus-cart').click(function () {
         },
         success: function (data) {
             eml.innerText = data.quantity;
+            updateTotal()
             document.getElementById("amount").innerText = data.amount;
-            document.getElementById("test").innerText = data.amount;
             document.getElementById("totalamount").innerText = data.totalamount;
         }
     })
@@ -28,7 +41,7 @@ $('.minus-cart').click(function () {
         },
         success: function (data) {
             eml.innerText = data.quantity;
-             document.getElementById("test").innerText = data.amount;
+            updateTotal()
             document.getElementById("amount").innerText = data.amount;
             document.getElementById("totalamount").innerText = data.totalamount;
         }
