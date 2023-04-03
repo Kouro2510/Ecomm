@@ -6,31 +6,32 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}"/>
-    <link rel="stylesheet" href="{% static 'app/css/slider.css' %}"/>
-    <link rel="stylesheet" href="{% static 'app/css/style.css' %}"/>
-    <link rel="stylesheet" href="{% static 'app/css/ratting.css' %}"/>
+    <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/slider.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/ratting.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/re-new.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     {#    <link rel="stylesheet" href="{% static 'app/css/cart-package.css' %}"/>#}
     {#    <link rel="stylesheet" href="{% static 'app/css/grid.css' %}"/>#}
-    <link rel="stylesheet" href="{% static 'app/css/checkout.css' %}" />
+    <link rel="stylesheet" href="{% static 'app/css/checkout.css' %}" >
+
     <title>Daily Product | {% block title %} {% endblock title %}</title>
 </head>
-<body style="height: 100%; border-radius:0.3px">
+<body style="height: 100%; border-radius:0.3px; ">
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-    (function () {
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/63f875374247f20fefe25ec0/1gq18joop';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-    })();
-</script>
-<!--End of Tawk.to Script-->
-<header>
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/63f875374247f20fefe25ec0/1gq18joop';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
     <nav>
         <div class="logo">
             <a href="{% url 'home' %}"> <img src="{% static "app/images/Neel.png" %}" alt="Avatar"></a>
@@ -39,14 +40,14 @@
 
             <div class="container">
                 <form action="/search" role="search" class="search">
-                    <input name="search" type="search" placeholder="hãy tìm gì đó" aria-label="search">
+                    <input class="search-input" name="search" type="search" placeholder="hãy tìm gì đó" aria-label="search">
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
         </div>
         <div class="user">
             {% if user.is_authenticated %}
-                <div class="dropdown">
+                <div class="dropdown dropbtn" id="Dropdown">
                     <img src="{% static "app/images/product/default.png" %}" alt="Avatar">
                     <p>{{ request.user.username|capfirst }}</p>
                     <ul class="dropdown-menu ">
@@ -82,49 +83,43 @@
             {% endif %}
         </div>
     </nav>
-</header>
-{% block banner-slider %}{% endblock banner-slider %}
-{% block information %}{% endblock information %}
-{% block main-content %}{% endblock main-content %}
-<footer>
-    <div class="footer-left">
-        <img src="{% static "app/images/Neel.png" %}" alt="Logo">
-        <div class="info">
-            <i class="fas fa-map"></i>
-            <p>Địa chỉ: 123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
-        </div>
-        <div class="info">
-            <i class="fas fa-phone"></i>
-            <p>Số điện thoại: 0123456789</p>
-        </div>
-        <div class="info">
-            <i class="fas fa-fax"></i>
-            <p>Số fax: 0123456789</p>
-        </div>
-        <div class="info">
-            <i class="fas fa-envelope"></i>
-            <p>Số điện thoại: 0123456789</p>
-        </div>
-        <div class="contact">
-            <a href="{% url 'contact' %}" style="margin-bottom: 5%" class="btn btn-primary mt-3 ">Write a contact
-                form</a>
-            </form>
-        </div>
-    </div>
-    <div class="footer-middle">
-        <h3>Giới thiệu về chúng tôi</h3>
-        <p>Chúng tôi là một công ty chuyên cung cấp các sản phẩm chất lượng cao với giá cả phải chăng.</p>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423.9450030400263!2d106.62724619054615!3d10.853529795372872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175298a797a214b%3A0x47b4978a89981367!2sC%C3%B4ng%20ty%20TNHH%20HOPEE!5e0!3m2!1svi!2s!4v1679639703121!5m2!1svi!2s"
-                width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-</footer>
-<footer>
-    <div class="coppy right ">
-        <p id="timenow"></p>
-    </div>
-
-</footer>
+    {% block banner-slider %}{% endblock banner-slider %}
+    {% block information %}{% endblock information %}
+    {% block main-content %}{% endblock main-content %}
+</body>
+{#<footer>#}
+{#    <div class="footer-left">#}
+{#        <img src="{% static "app/images/Neel.png" %}" alt="Logo">#}
+{#        <div class="info">#}
+{#            <i class="fas fa-map"></i>#}
+{#            <p>Địa chỉ: 123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>#}
+{#        </div>#}
+{#        <div class="info">#}
+{#            <i class="fas fa-phone"></i>#}
+{#            <p>Số điện thoại: 0123456789</p>#}
+{#        </div>#}
+{#        <div class="info">#}
+{#            <i class="fas fa-fax"></i>#}
+{#            <p>Số fax: 0123456789</p>#}
+{#        </div>#}
+{#        <div class="info">#}
+{#            <i class="fas fa-envelope"></i>#}
+{#            <p>Số điện thoại: 0123456789</p>#}
+{#        </div>#}
+{#        <div class="contact">#}
+{#            <a href="{% url 'contact' %}" style="margin-bottom: 5%" class="btn btn-primary mt-3 ">Write a contact#}
+{#                form</a>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="footer-middle">#}
+{#        <h3>Giới thiệu về chúng tôi</h3>#}
+{#        <p>Chúng tôi là một công ty chuyên cung cấp các sản phẩm chất lượng cao với giá cả phải chăng.</p>#}
+{#        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423.9450030400263!2d106.62724619054615!3d10.853529795372872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175298a797a214b%3A0x47b4978a89981367!2sC%C3%B4ng%20ty%20TNHH%20HOPEE!5e0!3m2!1svi!2s!4v1679639703121!5m2!1svi!2s"#}
+{#                width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy"#}
+{#                referrerpolicy="no-referrer-when-downgrade"></iframe>#}
+{#    </div>#}
+{#</footer>#}
 {% block payment-gateway %} {% endblock payment-gateway %}
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -134,12 +129,21 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'app/js/slider.js' %}"></script>
+{% comment %} {#<script src="{% static 'app/js/slider.js' %}"></script>#} {% endcomment %}
 <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'app/js/all.min.js' %}"></script>
 <script src="{% static 'app/js/myscript.js' %}"></script>
+<<<<<<< HEAD
+<script src="{% static 'app/js/comment.js' %}"></script>
+<script src="{% static 'app/js/main.js' %}"></script>
 <script src="{% static 'app/js/modal.js' %}"></script>
 <script src="{% static 'app/js/payment.js' %}"></script>
+<script src="{% static 'app/js/pagenation.js' %}"></script>
+<script src="{% static 'app/js/changeImage.js' %}"></script>
+=======
+<script src="{% static 'app/js/modal.js' %}"></script>
+<script src="{% static 'app/js/payment.js' %}"></script>
+>>>>>>> master
 
 
 

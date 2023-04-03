@@ -19,9 +19,9 @@ def home(request):
     totalwishlist = 0
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
-        totalwishlist = len(Wishlist.objects.filter(user=request.user))
+        wishitem = len(Wishlist.objects.filter(user=request.user))
     product = Product.objects.all()  # truy vấn tất cả các sản phẩm từ database
-    context = {'product': product, 'user': user, 'totalitem': totalitem, 'totalwishlist': totalwishlist}
+    context = {'product': product, 'user': user, 'totalitem': totalitem, 'wishitem': wishitem}
     return render(request, 'app/home.html', context)
 
 
@@ -58,25 +58,37 @@ def product_detail(request, pk):
     product = Product.objects.get(pk=pk)
     images = Image.objects.filter(product_images=pk)
     image_first = Image.objects.filter(product_images=pk).first()
+    image_last = Image.objects.filter(product_images=pk).last()
     all_comments = Comment.objects.filter(product=product.id)
     wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     parent_id = request.POST.get('parent_id')
     rating_stars = Rating.objects.filter(product=product)
-    values = request.POST.getlist('rating')  # Lấy toàn bộ giá trị value được post lên từ form
-    print(values)
     user = request.user
     totalitem = 0
     totalwishlist = 0
+    rattingstar = Rating.objects.filter(product=product)
+    star = rattingstar.values_list('value', flat=True)
+    star_list = [s for s in star]
+    len_start = len(star_list)
+    average_rating = 0
+    if len_start > 0:
+        average_rating = sum(star_list) / len(star_list)
+    else:
+        pass
+    test = int(average_rating)
+    test1 = range(test)
+    list_rating = Rating.objects.filter(product=product)
+    test = list_rating.values_list('value')
+    print(test)
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
     if request.method == "POST":
         form1 = CommentForm(request.POST)
         form2 = ReplyForm(request.POST)
-        print(form2.errors)
         if parent_id is None:
             if form1.is_valid():
-                value = int(request.POST.get('rating'))  # Lấy giá trị value của rating được post lên từ form
+                value = int(request.POST.get('rating',0))
                 author = request.user
                 product_id = product
                 description = form1.cleaned_data["description"]
@@ -105,11 +117,16 @@ def product_detail(request, pk):
         'all_comments': all_comments,
         'images': images,
         'image_first': image_first,
+        'image_last': image_last,
         'totalitem': totalitem,
         'wishitem': wishitem,
         'totalwishlist': totalwishlist,
         'user': user,
         'rating_stars': rating_stars,
+        'average_rating': average_rating,
+        'len_start': len_start,
+        'test': test1,
+        'list_rating': test,
     }
     return render(request, "app/productdetail.html", context)
 
@@ -394,6 +411,7 @@ class checkout(View):
         totalamount = famount + 40
         payment.user = request.user
         payment.amount = totalamount
+        print(value)
         payment.payment_option = request.POST.get('Payment')
         print(request.POST.get('Payment'))
         payment.payment_status = "pending"

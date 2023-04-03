@@ -49,40 +49,40 @@
                 <li><a class="dropdown-item" href="{% url 'category' 'IC' %}">Ice-creams</a></li>
             </ul>
         </div>
-        <div class="product-item">
-            {% for product in product %}
-                <div class="product">
-                    <div class="product-image">
-                        <img src="{{ product.product_image.url }}" alt="Product 1">
-                    </div>
-                    <div class="product-details">
-                        <h2>{{ product.title }}</h2>
-                        {% if product.discounted_price != 0 %}
+        <div class="product-container">
+            <div class="product-item" id="data-container">
+                <ul class="data-list">
+                {% for product in product %}
+                    <li class="product">
+                        <div class="product-image">
+                            <img src="{{ product.product_image.url }}" alt="Product 1">
+                        </div>
+                        <div class="product-details">
+                            <h2>{{ product.title }}</h2>
+                            {% if product.discounted_price != 0 %}
                             <p>{{ product.discounted_price }}$/<small>
-                                <del>-{{ product.selling_price }}$</del>
-                                {% else %}
-                            <p>{{ product.selling_price }}$</p>
-                        {% endif %}
-                        </small></p>
-                        <div class="flex">
-                            {% if user.is_authenticated %}
+                                <del>-12$</del>
+                            </small></p>
+                            {% else %}
+                                <p>{{ product.selling_price }}</p>
+                            {% endif %}
+                            <div class="button-main">
+                                <a href="{% url 'product-detail' product.id %}" class="view">View Details</a>
                                 <form action="/add-to-cart" class="d-inline">
                                     <input type="hidden" name="prod_id" value="{{ product.id }}">
-                                    <button style="border-radius: 0.2rem" type="submit" class=" add">Add to Cart
-                                    </button>
+                                    <button type="submit" class="add">Add to Cart</button>
                                 </form>
-                                <button class="view"><a href="{% url 'product-detail' product.id %}">View Details</a>
-                                </button>
-                            {% else %}
-                                <button class="add"><a href="{% url 'login' %}">View Details</a></button>
-                                <button class="view"><a href="{% url 'login' %}">View Details</a></button>
-                            {% endif %}
+                            </div>
                         </div>
-                    </div>
-                </div>
-            {% endfor %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
     <br/><br/>
+     <div id="pagination-container">
+        <ul class="pagination"></ul>
+    </div>
 
 {% endblock main-content %}

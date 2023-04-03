@@ -12,6 +12,7 @@
                         <p id="Address">Địa chỉ: {{ add.locality }} {{ add.city }} {{ add.area }}
                             - {{ add.zipcode }}</p>
                         <p id="Phone">SDT: {{ add.mobile }}</p>
+
                     </div>
                 </div>
                 <button class="change-icons"><i class="fas fa-2x fa-angle-right"></i></button>
@@ -41,6 +42,13 @@
                                         </td>
                                         <td>{{ item.product.title|title }}</td>
                                         {% if item.product.discounted_price == 0 %}
+
+                                            <td>{{ item.product.selling_price|floatformat:"-0"}}$</td>
+                                        {% else %}
+                                            <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
+                                        {% endif %}
+                                        <td>{{ item.quantity }}</td>
+                                        <th>{{ totalamount|floatformat:"-0"}}$</th>
                                             <td><div class="price">{{ item.product.selling_price|floatformat:"-0" }}</div>
                                                 </td>
                                         {% else %}
@@ -50,6 +58,7 @@
                                         {% endif %}
                                         <td class="quantity">{{ item.quantity }}</td>
                                         <th class="total"></th>
+
                                     </tr>
                                     </tbody>
                                 {% endfor %}
@@ -75,24 +84,27 @@
                             </div>
                             <div class="card-payment-details">
                                 <p>Chọn thẻ thanh toán</p>
+
                                 <ul class="payment-card">
                                     <li class="card">
                                         <label>Thẻ Visa
                                             <input type="radio" value="Visa" name="Payment">
                                         </label>
-                                        <img src="asset/payment/payment.png"/>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
                                     </li>
                                     <li class="card">
                                         <label>Thẻ Mastercard
                                             <input type="radio" value="Mastercard" name="Payment">
                                         </label>
-                                        <img src="asset/payment/payment.png"/>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+
                                     </li>
                                     <li class="card">
                                         <label>Thẻ ATM nội địa
                                             <input type="radio" value="ATM" name="Payment">
                                         </label>
-                                        <img src="asset/payment/payment.png"/>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+
                                     </li>
                                 </ul>
                             </div>
@@ -104,19 +116,19 @@
                                             <label>Ví Momo
                                                 <input type="radio" value="Momo" name="Payment">
                                             </label>
-                                            <img src="asset/payment/payment.png"/>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
                                         </li>
                                         <li class="card">
                                             <label>Ví Zalopay
                                                 <input type="radio" value="ZaloPay" name="Payment">
                                             </label>
-                                            <img src="asset/payment/payment.png"/>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
                                         </li>
                                         <li class="card">
                                             <label>Thẻ ATM nội địa
                                                 <input type="radio" value="ATM" name="Payment">
                                             </label>
-                                            <img src="asset/payment/payment.png"/>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
                                         </li>
                                     </ul>
                                 </ul>
@@ -163,10 +175,11 @@
                             <i class="fas fa-2x fa-angle-right icon"></i>
                         </div>
                     </button>
-                    <hr>
-                </div>
+                {% endfor %}
+                <hr>
             </div>
-        {% endfor %}
+        </div>
+
     </section>
     <section>
         <div id="payment-modal" class="modal">
@@ -183,7 +196,6 @@
             var paymentButton = document.getElementById("str-button1");
             var addressRadios = document.getElementsByName("address");
             var addressChecked = false;
-
             // Check if any address radio button is checked
             for (var i = 0; i < addressRadios.length; i++) {
                 if (addressRadios[i].checked) {
@@ -191,7 +203,6 @@
                     break;
                 }
             }
-
             // Enable/disable "Payment" button
             paymentButton.disabled = !addressChecked;
         }
