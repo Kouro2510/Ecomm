@@ -31,7 +31,10 @@ STATUS_CHOICES = {
 
 PAYMENT_CHOICES = {
     ('Wallet', 'Wallet'),
-    ('Card', 'Card'),
+    ('Visa', 'Visa'),
+    ('Mastercard','Mastercard'),
+    ('ATM','ATM'),
+    ('ZaloPay','ZaloPay'),
     ('MoMo', 'MoMo'),
 }
 
@@ -107,7 +110,7 @@ OrderPlacedFormSet = inlineformset_factory(Payment, OrderPlaced, fields=('paymen
 
 
 class PaymentOption(models.Model):
-    name = models.CharField(choices=PAYMENT_CHOICES, max_length=50)
+    name = models.CharField(choices=PAYMENT_CHOICES, max_length=50, default='Wallet')
     description = models.TextField()
 
     def __str__(self):

@@ -19,7 +19,7 @@
        <tbody class="text-center">
           {% for op in order_placed %}
           <tr>
-             <td class="py-5">{{ op.customer}}</td>
+             <td class="py-5">{{ op.customer|title}}</td>
              <td> <img src="{{ op.product.product_image.url }}" height="80" width="100"></td>
              <td class="py-5"> {{ op.product.title }}</td>
              <td class="py-5"> {{ op.price }}$</td>

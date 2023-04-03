@@ -3,194 +3,178 @@
 {% block title %}Buy Now{% endblock title %}
 {% block main-content %}
     <section>
-    <div class="container checkout">
-        <h2 class="title">Thông tin đơn hàng</h2>
-        <div class="container-address address" id="open-modal">
-            <div class="address-details">
-                <i class="fas fa-map-location-dot fa-2x "></i>
-                <div>
-                    <p id="FullName">Tên : Lê Thanh Phương</p>
-                    <p id="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
-                    <p id="Phone">SDT: 09335248</p>
+        <div class="container checkout">
+            <div class="container-address address" id="open-modal">
+                <div class="address-details">
+                    <i class="fa-solid fa-map-location-dot fa-2x "></i>
+                    <div>
+                        <p id="FullName">Tên : {{ add.first.name|title }}</p>
+                        <p id="Address">Địa chỉ: {{ add.first.locality }} {{ add.first.city }} {{ add.first.area }}
+                            - {{ add.first.zipcode }}</p>
+                        <p id="Phone">SDT: {{ add.first.mobile }}</p>
+                    </div>
                 </div>
+                <button class="change-icons"><i class="fas fa-2x fa-angle-right"></i></button>
             </div>
-            <button class="change-icons"><i class="fas fa-2x fa-angle-right"></i></button>
-        </div>
-        <div class="checkout-section">
-            <h2>Thông tin sản phẩm</h2>
-            <div class="product-item">
-                <div class="checkout-details">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Hình ảnh</th>
-                            <th>Tên</th>
-                            <th>Giá Tiền</th>
-                            <th>Số lượng</th>
-                            <th>Tổng tiền</th>
-                        </tr>
-                        </thead>
-                        {% for item in cart_items %}
-                        <tbody>
-                        <tr>
-                            <td class="checkout-img">
-                                <img src="{{ item.product.product_image.url }}" alt="Product Image">
-                            </td>
-                            <td>{{ item.product.title|title }}</td>
-                            <td>{{ item.quantity }}</td>
-                            {% if item.product.discounted_price == 0 %}
-                            <td>{{item.product.selling_price|floatformat:"-0"}}$</td>
-                            {% else %}
-                            <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
-                            {% endif %}
-                            <th>{{value|floatformat:"-0"}}$</th>
-                        </tr>
-                        </tbody>
-                    {% endfor %}
-                    </table>
+            <form method="post" id="myform">
+                <h2 class="title">Thông tin đơn hàng</h2>
+                {% csrf_token %}
+                <div class="checkout-section">
+                    <h2>Thông tin sản phẩm</h2>
+                    <div class="product-item">
+                        <div class="checkout-details">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên</th>
+                                    <th>Giá Tiền</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
+                                </tr>
+                                </thead>
+                                {% for item in cart_items %}
+                                    <tbody>
+                                    <tr>
+                                        <td class="checkout-img">
+                                            <img src="{{ item.product.product_image.url }}" alt="Product Image">
+                                        </td>
+                                        <td>{{ item.product.title|title }}</td>
+                                        {% if item.product.discounted_price == 0 %}
+                                            <td>{{ item.product.selling_price|floatformat:"-0"}}$</td>
+                                        {% else %}
+                                            <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
+                                        {% endif %}
+                                        <td>{{ item.quantity }}</td>
+                                        <th>{{ totalamount|floatformat:"-0"}}$</th>
+                                    </tr>
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="checkout-section payment">
-            <div>
-                <div class="payment-options">
-                    <button class="btn-buy-now active-checkout" id="payment">Mua trực tiếp</button>
-                    <button class="btn-card-payment " id="payment">Thanh toán bằng thẻ ngân hàng</button>
-                    <button class="btn-momo-payment " id="payment">Thanh toán bằng Momo</button>
-                </div>
+                <div class="checkout-section payment">
+                    <div>
+                        <div class="payment-options">
+                            <button type="button" class="btn-buy-now active-checkout" id="payment"><input value="Wallet"
+                                                                                                          name="Payment"
+                                                                                                          hidden="hidden">Thanh
+                                toán trực tiếp
+                            </button>
+                            <button type="button" class="btn-card-payment " id="payment">Thanh toán bằng thẻ ngân hàng
+                            </button>
+                            <button type="button" class="btn-momo-payment " id="payment">Thanh toán bằng Momo</button>
+                        </div>
 
-                <div class="payment-details">
-                    <div class="buy-now-details">
+                        <div class="payment-details">
+                            <div class="buy-now-details">
+                            </div>
+                            <div class="card-payment-details">
+                                <ul class="payment-card">
+                                    <li class="card">
+                                        <label>Thẻ Visa
+                                            <input type="radio" value="Visa" name="Payment">
+                                        </label>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                    </li>
+                                    <li class="card">
+                                        <label>Thẻ Mastercard
+                                            <input type="radio" value="Mastercard" name="Payment">
+                                        </label>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                    </li>
+                                    <li class="card">
+                                        <label>Thẻ ATM nội địa
+                                            <input type="radio" value="ATM" name="Payment">
+                                        </label>
+                                        <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="momo-payment-details">
+                                <ul>
+                                    <ul class="payment-card">
+                                        <li class="card">
+                                            <label>Ví Momo
+                                                <input type="radio" value="Momo" name="Payment">
+                                            </label>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                        </li>
+                                        <li class="card">
+                                            <label>Ví Zalopay
+                                                <input type="radio" value="ZaloPay" name="Payment">
+                                            </label>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                        </li>
+                                        <li class="card">
+                                            <label>Thẻ ATM nội địa
+                                                <input type="radio" value="ATM" name="Payment">
+                                            </label>
+                                            <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-payment-details">
-                        <p>Chọn thẻ thanh toán</p>
-                        <ul class="payment-card">
-                            <li class="card">
-                                <label>Thẻ Visa
-                                    <input type="radio" value="Visa" name="Card">
-                                </label>
-                                <img src="asset/payment/payment.png"/>
-                            </li>
-                            <li class="card">
-                                <label>Thẻ Mastercard
-                                    <input type="radio" value="Mastercard" name="Card">
-                                </label>
-                                <img src="asset/payment/payment.png"/>
-                            </li>
-                            <li class="card">
-                                <label>Thẻ ATM nội địa
-                                    <input type="radio" value="ATM" name="Card">
-                                </label>
-                                <img src="asset/payment/payment.png"/>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="momo-payment-details">
-                        <p>Chọn ví thanh toán</p>
-                        <ul>
-                            <ul class="payment-card">
-                                <li class="card">
-                                    <label>Ví Momo
-                                        <input type="radio" value="Visa" name="Card">
-                                    </label>
-                                    <img src="asset/payment/payment.png"/>
-                                </li>
-                                <li class="card">
-                                    <label>Ví Zalopay
-                                        <input type="radio" value="Mastercard" name="Card">
-                                    </label>
-                                    <img src="asset/payment/payment.png"/>
-                                </li>
-                                <li class="card">
-                                    <label>Thẻ ATM nội địa
-                                        <input type="radio" value="ATM" name="Card">
-                                    </label>
-                                    <img src="asset/payment/payment.png"/>
-                                </li>
-                            </ul>
-                        </ul>
+                    <div class="shipping">
+                        <div class="shipping-details">
+                            <p>Phí vận chuyển:</p>
+                            <h3>40$</h3>
+                        </div>
+                        <div class="shipping-details">
+                            <p>Giá tiền:</p>
+                            <h3>{{ famount|floatformat:"-0"}}$</h3>
+                        </div>
+                        <div class="shipping-details">
+                            <p>Tổng tiền:</p>
+                            <h3>{{ totalamount|floatformat:"-0" }}$</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="shipping">
-                <div class="shipping-details">
-                    <p>Phí vận chuyển:</p>
-                    <h3>20$</h3>
-                </div>
-                <div class="shipping-details">
-                    <p>Giá tiền:</p>
-                    <h3>20$</h3>
-                </div>
-                <div class="shipping-details">
-                    <p>Tổng tiền:</p>
-                    <h3>20$</h3>
-                </div>
-            </div>
+                <button type="submit" class="checkout-button" id="str-button1">Thanh toán</button>
+            </form>
         </div>
-        <button class="checkout-button" id="modal-payment">Thanh toán</button>
-    </div>
-</section>
-<section>
-    <div id="my-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-            </div>
-            <button class="change-value">
-                <div class="address">
-                    <div class="address-details">
-                        <i class="fas fa-map-location-dot fa-2x "></i>
-                        <div class="address-change">
-                            <p class="Name">Tên : Lê Thanh Phương 1</p>
-                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
-                            <p class="Phone">SDT: 09335248</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-2x fa-angle-right icon"></i>
-                </div>
-            </button>
-            <hr/>
-            <button class="change-value">
-                <div class="address">
-                    <div class="address-details">
-                        <i class="fas fa-map-location-dot fa-2x "></i>
-                        <div class="address-change">
-                            <p class="Name">Tên : Lê Thanh Phương 2</p>
-                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
-                            <p class="Phone">SDT: 09335248</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-2x fa-angle-right icon"></i>
-                </div>
-            </button>
-            <hr/>
-            <button class="change-value">
-                <div class="address">
-                    <div class="address-details">
-                        <i class="fas fa-map-location-dot fa-2x "></i>
-                        <div class="address-change">
-                            <p class="Name">Tên : Lê Thanh Phương 3</p>
-                            <p class="Address">Địa chỉ: ABC, Phường XYZ, Quận BCD, TPHCM</p>
-                            <p class="Phone">SDT: 09335248</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-2x fa-angle-right icon"></i>
-                </div>
-            </button>
+    </section>
+    <section>
 
-            <hr/>
+        <div id="my-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                </div>
+                {% for ad in add %}
+                    <button class="change-value">
+                        <div class="address">
+                            <div class="address-details">
+                                <i class="fa-solid fa-map-location-dot fa-2x "></i>
+                                <div class="address-change">
+                                    <p class="Name">Tên : {{ ad.name|title }}</p>
+                                    <p class="Address">Địa chỉ: {{ ad.locality }} {{ ad.city }} {{ ad.area }}
+                                        - {{ ad.zipcode }}</p>
+                                    <p class="Phone">SDT: {{ ad.mobile }}</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-2x fa-angle-right icon"></i>
+                        </div>
+                    </button>
+                {% endfor %}
+                <hr>
+            </div>
         </div>
-    </div>
-</section>
-<section>
-    <div id="payment-modal" class="modal">
-        <div class=" payment-content">
-            <iframe src="http://giphy.com/embed/ibolLe3mOqHE3PQTtk" width="200" height="200" frameborder="0" class="giphy-embed" allowFullScreen></iframe>
-            <p> Thanh toán thành công</p>
-            <button class="close-payment">close</button>
+
+    </section>
+    <section>
+        <div id="payment-modal" class="modal">
+            <div class=" payment-content">
+                <iframe src="http://giphy.com/embed/ibolLe3mOqHE3PQTtk" width="200" height="200" frameborder="0"
+                        class="giphy-embed" allowFullScreen></iframe>
+                <p> Thanh toán thành công</p>
+                <button class="close-payment">close</button>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
     <script>
         function updatePaymentButton() {
             var paymentButton = document.getElementById("str-button1");

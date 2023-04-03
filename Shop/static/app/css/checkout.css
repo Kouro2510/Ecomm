@@ -315,14 +315,6 @@ section {
 
 
 /* show only items 21-30 (i.e., on the third page) */
-.product {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid rgba(0, 0, 0, .125);
-}
 
 table {
 
@@ -445,18 +437,6 @@ th {
     background-color: #fff;
 }
 
-.product-name {
-    font-family: Georgia, serif;
-    font-size: 45px;
-    margin: 0;
-}
-
-.ratting {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-}
-
 .ratting i {
     color: yellow;
 }
@@ -504,15 +484,6 @@ th {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.button-wishlist {
-    width: 50px;
-    height: 40px;
-    color: #ffffff;
-    font-size: 15px;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
 .view:hover {
     color: #fff;
     background-color: #0b5ed7;
@@ -527,12 +498,6 @@ th {
 
 .comment {
     margin-top: 10px;
-}
-
-.rating {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center
 }
 
 .rating > input {

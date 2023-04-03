@@ -372,13 +372,7 @@ def show_cart(request):
         amount = amount + value
         cart_empty = True
     totalamount = amount + 40
-    context = {
-       'value': value,
-        'user':user,
-        'cart':cart,
-
-    }
-    return render(request, 'app/addtocart.html', context)
+    return render(request, 'app/addtocart.html', locals())
 
 
 class checkout(View):
@@ -416,6 +410,7 @@ class checkout(View):
         totalamount = famount + 40
         payment.user = request.user
         payment.amount = totalamount
+        print(value)
         payment.payment_option = request.POST.get('Payment')
         payment.payment_status = "pending"
         payment.paid = False
