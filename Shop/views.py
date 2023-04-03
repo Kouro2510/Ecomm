@@ -16,7 +16,7 @@ from django.core.mail import send_mail
 def home(request):
     user = request.user
     totalitem = 0
-    totalwishlist = 0
+    wishitem = 0
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))

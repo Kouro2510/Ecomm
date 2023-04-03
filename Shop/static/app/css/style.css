@@ -18,7 +18,7 @@ a {
     --primary-color: #EE4D2D;
     --header-height: 120px;
     --navbar-height: 34px;
-    --header-search: calc(var(--header-height)) - calc(var(--navbar-height));
+    --header-search: calc(var(--header-height)) -calc(var(--navbar-height));
     --star-gold-color: #ffce3e;
     --header__sort-bar-height: 46px
 }
@@ -781,7 +781,7 @@ a {
     --primary-color: #EE4D2D;
     --header-height: 120px;
     --navbar-height: 34px;
-    --header-search: calc(var(--header-height)) - calc(var(--navbar-height));
+    --header-search: calc(var(--header-height)) -calc(var(--navbar-height));
     --star-gold-color: #ffce3e;
     --header__sort-bar-height: 46px
 }
@@ -1570,6 +1570,7 @@ footer {
 
 .d-flex {
     display: flex;
+    gap: 10px;
 }
 
 .btn {
@@ -1915,5 +1916,5 @@ html > body > .container > .row-cols-4 {
 }
 
 .bg-danger {
-    background-color: #dc3545!important;
+    background-color: #dc3545 !important;
 }

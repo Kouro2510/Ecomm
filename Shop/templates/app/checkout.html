@@ -42,22 +42,13 @@
                                         </td>
                                         <td>{{ item.product.title|title }}</td>
                                         {% if item.product.discounted_price == 0 %}
-
-                                            <td>{{ item.product.selling_price|floatformat:"-0"}}$</td>
+                                            <td><div class="price">{{ item.product.selling_price|floatformat:"-0" }}</div></td>
                                         {% else %}
-                                            <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
-                                        {% endif %}
-                                        <td>{{ item.quantity }}</td>
-                                        <th>{{ totalamount|floatformat:"-0"}}$</th>
-                                            <td><div class="price">{{ item.product.selling_price|floatformat:"-0" }}</div>
-                                                </td>
-                                        {% else %}
-                                            <td>
-                                                <div class="price">{{ item.product.discounted_price|floatformat:"-0" }}</div>
-                                                </td>
+                                            <td><div class="price">{{ item.product.discounted_price|floatformat:"-0"}}</div></td>
                                         {% endif %}
                                         <td class="quantity">{{ item.quantity }}</td>
-                                        <th class="total"></th>
+                                       <th class="total"></th>
+
 
                                     </tr>
                                     </tbody>

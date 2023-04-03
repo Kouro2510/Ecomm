@@ -443,7 +443,7 @@ th {
 }
 
 .price p {
-    margin-top: 5px;
+    margin-top: 30px;
     margin-bottom: 10px;
 }
 
@@ -725,7 +725,6 @@ th {
 }
 .card img{
     padding-top: 10px;
-    width: 60%;
 }
 
 .payment-options button{

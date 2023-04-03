@@ -505,12 +505,16 @@ th {
 }
 
 .button-wishlist {
+    margin-left: 20px;
     width: 50px;
-    height: 40px;
+    height: 35px;
     color: #ffffff;
     font-size: 15px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .view:hover {
@@ -763,7 +767,6 @@ th {
 }
 .card img{
     padding-top: 10px;
-    width: 60%;
 }
 
 .payment-options button{
