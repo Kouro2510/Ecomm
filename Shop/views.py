@@ -42,7 +42,6 @@ def contact(request):
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
-    form = ContactForm(request.POST)
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -352,6 +351,7 @@ def show_cart(request):
     user = request.user
     cart = Cart.objects.filter(user=user)
     amount = 0
+    value =0
     cart_empty = False
     user = request.user
     totalwishlist = 0
@@ -372,6 +372,7 @@ def show_cart(request):
         amount = amount + value
         cart_empty = True
     totalamount = amount + 40
+    price=value
     return render(request, 'app/addtocart.html', locals())
 
 
@@ -412,6 +413,7 @@ class checkout(View):
         payment.amount = totalamount
         print(value)
         payment.payment_option = request.POST.get('Payment')
+        print(request.POST.get('Payment'))
         payment.payment_status = "pending"
         payment.paid = False
         payment.save()

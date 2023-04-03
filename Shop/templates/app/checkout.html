@@ -8,10 +8,11 @@
                 <div class="address-details">
                     <i class="fa-solid fa-map-location-dot fa-2x "></i>
                     <div>
-                        <p id="FullName">Tên : {{ add.first.name|title }}</p>
-                        <p id="Address">Địa chỉ: {{ add.first.locality }} {{ add.first.city }} {{ add.first.area }}
-                            - {{ add.first.zipcode }}</p>
-                        <p id="Phone">SDT: {{ add.first.mobile }}</p>
+                        <p id="FullName">Tên : {{ add.name|title }}</p>
+                        <p id="Address">Địa chỉ: {{ add.locality }} {{ add.city }} {{ add.area }}
+                            - {{ add.zipcode }}</p>
+                        <p id="Phone">SDT: {{ add.mobile }}</p>
+
                     </div>
                 </div>
                 <button class="change-icons"><i class="fas fa-2x fa-angle-right"></i></button>
@@ -28,25 +29,36 @@
                                 <tr>
                                     <th>Hình ảnh</th>
                                     <th>Tên</th>
-                                    <th>Giá Tiền</th>
+                                    <th>Giá Tiền($)</th>
                                     <th>Số lượng</th>
                                     <th>Tổng tiền</th>
                                 </tr>
                                 </thead>
                                 {% for item in cart_items %}
                                     <tbody>
-                                    <tr>
+                                    <tr class="cart-product">
                                         <td class="checkout-img">
                                             <img src="{{ item.product.product_image.url }}" alt="Product Image">
                                         </td>
                                         <td>{{ item.product.title|title }}</td>
                                         {% if item.product.discounted_price == 0 %}
+
                                             <td>{{ item.product.selling_price|floatformat:"-0"}}$</td>
                                         {% else %}
                                             <td>{{ item.product.discounted_price|floatformat:"-0"}}$</td>
                                         {% endif %}
                                         <td>{{ item.quantity }}</td>
                                         <th>{{ totalamount|floatformat:"-0"}}$</th>
+                                            <td><div class="price">{{ item.product.selling_price|floatformat:"-0" }}</div>
+                                                </td>
+                                        {% else %}
+                                            <td>
+                                                <div class="price">{{ item.product.discounted_price|floatformat:"-0" }}</div>
+                                                </td>
+                                        {% endif %}
+                                        <td class="quantity">{{ item.quantity }}</td>
+                                        <th class="total"></th>
+
                                     </tr>
                                     </tbody>
                                 {% endfor %}
@@ -71,6 +83,8 @@
                             <div class="buy-now-details">
                             </div>
                             <div class="card-payment-details">
+                                <p>Chọn thẻ thanh toán</p>
+
                                 <ul class="payment-card">
                                     <li class="card">
                                         <label>Thẻ Visa
@@ -83,16 +97,19 @@
                                             <input type="radio" value="Mastercard" name="Payment">
                                         </label>
                                         <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+
                                     </li>
                                     <li class="card">
                                         <label>Thẻ ATM nội địa
                                             <input type="radio" value="ATM" name="Payment">
                                         </label>
                                         <img src="{% static 'app/images/Screenshot_20230227-171054_MoMo.jpg' %}"/>
+
                                     </li>
                                 </ul>
                             </div>
                             <div class="momo-payment-details">
+                                <p>Chọn ví thanh toán</p>
                                 <ul>
                                     <ul class="payment-card">
                                         <li class="card">
@@ -125,7 +142,7 @@
                         </div>
                         <div class="shipping-details">
                             <p>Giá tiền:</p>
-                            <h3>{{ famount|floatformat:"-0"}}$</h3>
+                            <h3>{{ famount|floatformat:"-0" }}$</h3>
                         </div>
                         <div class="shipping-details">
                             <p>Tổng tiền:</p>
@@ -138,13 +155,12 @@
         </div>
     </section>
     <section>
-
-        <div id="my-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close">&times;</span>
-                </div>
-                {% for ad in add %}
+        {% for ad in add %}
+            <div id="my-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                    </div>
                     <button class="change-value">
                         <div class="address">
                             <div class="address-details">
@@ -180,7 +196,6 @@
             var paymentButton = document.getElementById("str-button1");
             var addressRadios = document.getElementsByName("address");
             var addressChecked = false;
-
             // Check if any address radio button is checked
             for (var i = 0; i < addressRadios.length; i++) {
                 if (addressRadios[i].checked) {
@@ -188,7 +203,6 @@
                     break;
                 }
             }
-
             // Enable/disable "Payment" button
             paymentButton.disabled = !addressChecked;
         }
